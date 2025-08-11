@@ -123,21 +123,39 @@
   opacity: 0.8;
 }
 
-/* Split layout specific adjustments */
-.hand-cards-split .playing-card-container {
-  width: 90px;
-  height: 126px;
+/* Flop section cards - larger */
+.flop-card-slot .playing-card-container {
+  width: 100px;
+  height: 140px;
 }
 
-.hand-cards-split .card-rank {
+.flop-card-slot .card-rank {
+  font-size: 1.2rem;
+}
+
+.flop-card-slot .card-suit {
   font-size: 1rem;
 }
 
-.hand-cards-split .card-suit {
+.flop-card-slot .card-suit-large {
+  font-size: 2.5rem;
+}
+
+/* User cards section - medium */
+.user-hand-cards .playing-card-container {
+  width: 80px;
+  height: 112px;
+}
+
+.user-hand-cards .card-rank {
+  font-size: 1rem;
+}
+
+.user-hand-cards .card-suit {
   font-size: 0.875rem;
 }
 
-.hand-cards-split .card-suit-large {
+.user-hand-cards .card-suit-large {
   font-size: 2rem;
 }
 
@@ -158,10 +176,5 @@
   
   .card-suit-large {
     font-size: 1.25rem;
-  }
-  
-  .hand-cards-split .playing-card-container {
-    width: 70px;
-    height: 98px;
   }
 }

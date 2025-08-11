@@ -1,0 +1,179 @@
+.poker-table-section-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.table-title {
+  font-size: 36px;
+  font-weight: bold;
+  text-align: center;
+  color: white;
+  margin-bottom: 15px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  letter-spacing: 3px;
+}
+
+.table-area-new {
+  flex: 1;
+  perspective: 1200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.table-surface-new {
+  width: 450px;
+  height: 300px;
+  transform: rotateX(45deg) rotateY(-5deg);
+  transform-style: preserve-3d;
+}
+
+.table-felt-new {
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at center, #0f3a0f 0%, #082108 70%);
+  border: 8px solid #654321;
+  border-radius: 50%;
+  position: relative;
+  box-shadow: 
+    inset 0 0 30px rgba(0, 0, 0, 0.6),
+    0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.table-felt-new::before {
+  content: '';
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.table-center-new {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.table-logo-new {
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 18px;
+  font-weight: bold;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.table-player-new {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  z-index: 10;
+}
+
+.table-player-new.current-player-new {
+  transform: translate(-50%, -50%) scale(1.2) !important;
+}
+
+.player-cards-new {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 4px;
+}
+
+.player-info-new {
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  padding: 3px 6px;
+  text-align: center;
+  min-width: 60px;
+  backdrop-filter: blur(10px);
+}
+
+.player-name-new {
+  font-size: 10px;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 1px;
+}
+
+.player-chips-new {
+  font-size: 9px;
+  color: #fbbf24;
+  font-weight: bold;
+}
+
+.dealer-button-new {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  z-index: 20;
+}
+
+.dealer-chip-new {
+  background: white;
+  color: black;
+  border: 2px solid #333;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.table-actions {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 20px;
+  padding: 15px;
+}
+
+.action-btn-new {
+  font-size: 24px;
+  font-weight: bold;
+  padding: 15px 40px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 150px;
+  letter-spacing: 2px;
+}
+
+.fold-btn-new {
+  background: linear-gradient(135deg, #374151, #1f2937);
+  color: white;
+  border: 2px solid #4b5563;
+}
+
+.fold-btn-new:hover {
+  background: linear-gradient(135deg, #1f2937, #111827);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+.raise-btn-new {
+  background: linear-gradient(135deg, #1e40af, #1e3a8a);
+  color: white;
+  border: 2px solid #3b82f6;
+}
+
+.raise-btn-new:hover {
+  background: linear-gradient(135deg, #1e3a8a, #1e3a8a);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(30, 64, 175, 0.4);
+}

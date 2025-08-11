@@ -1,8 +1,8 @@
 .card-back-exact {
-  width: 28px;
-  height: 40px;
+  width: 24px;
+  height: 34px;
   background: linear-gradient(135deg, #1e40af 0%, #3730a3 50%, #581c87 100%);
-  border-radius: 4px;
+  border-radius: 3px;
   border: 1px solid rgba(0, 0, 0, 0.2);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   position: relative;
@@ -19,14 +19,14 @@
 }
 
 .card-back-design {
-  width: 20px;
-  height: 30px;
+  width: 16px;
+  height: 24px;
   background-image: 
     radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.3) 1px, transparent 1px),
     radial-gradient(circle at 75% 25%, rgba(255, 255, 255, 0.3) 1px, transparent 1px),
     radial-gradient(circle at 25% 75%, rgba(255, 255, 255, 0.3) 1px, transparent 1px),
     radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
-  background-size: 6px 6px;
+  background-size: 4px 4px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 2px;
   position: relative;
@@ -38,24 +38,24 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 12px;
-  height: 20px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 6px;
-}
-
-/* Split layout adjustments for card backs */
-.player-cards-split .card-back-exact {
-  width: 24px;
-  height: 34px;
-}
-
-.player-cards-split .card-back-design {
-  width: 16px;
-  height: 24px;
-}
-
-.player-cards-split .card-back-design::before {
-  width: 10px;
+  width: 8px;
   height: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+/* Table section specific sizing */
+.player-cards-new .card-back-exact {
+  width: 20px;
+  height: 28px;
+}
+
+.player-cards-new .card-back-design {
+  width: 14px;
+  height: 20px;
+}
+
+.player-cards-new .card-back-design::before {
+  width: 6px;
+  height: 12px;
 }
