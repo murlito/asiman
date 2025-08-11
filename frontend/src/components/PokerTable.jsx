@@ -61,14 +61,14 @@ export default function PokerTable({ players, communityCards, currentPlayer, pot
 
   const getPlayerPosition = (index, totalPlayers) => {
     const angle = (index * 360) / totalPlayers;
-    const radius = 250;
-    const x = Math.cos((angle - 90) * Math.PI / 180) * radius + 50;
-    const y = Math.sin((angle - 90) * Math.PI / 180) * radius + 50;
+    const radius = 200; // Reduced radius for better visibility
+    const x = Math.cos((angle - 90) * Math.PI / 180) * radius;
+    const y = Math.sin((angle - 90) * Math.PI / 180) * radius;
     
     return {
-      x: `${x}%`,
-      y: `${y}%`,
-      rotation: angle
+      x: `calc(50% + ${x}px)`,
+      y: `calc(50% + ${y}px)`,
+      rotation: 0 // Removed rotation for better readability
     };
   };
 
