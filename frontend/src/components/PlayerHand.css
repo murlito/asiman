@@ -1,0 +1,57 @@
+.player-hand-display {
+  display: flex;
+  align-items: flex-end;
+  gap: 2rem;
+}
+
+.hand-cards {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.player-chips-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.chips-amount {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fbbf24;
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+}
+
+.chips-stack {
+  position: relative;
+  width: 60px;
+  height: 40px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.chip-piece {
+  position: absolute;
+  width: 40px;
+  height: 8px;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b, #d97706);
+  border-radius: 50%;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.3),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3);
+  animation: chipStack 0.3s ease-out forwards;
+}
+
+@keyframes chipStack {
+  from {
+    transform: translateY(-20px) scale(0.8);
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

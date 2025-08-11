@@ -1,0 +1,171 @@
+.poker-table-3d-container {
+  perspective: 1500px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.table-3d-surface {
+  width: 600px;
+  height: 400px;
+  position: relative;
+  transform: rotateX(60deg) rotateY(0deg);
+  transform-style: preserve-3d;
+}
+
+.table-felt-3d {
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at center, #2d5016 0%, #1a2f0a 70%);
+  border: 8px solid #8b4513;
+  border-radius: 50%;
+  position: relative;
+  box-shadow: 
+    inset 0 0 50px rgba(0, 0, 0, 0.5),
+    0 30px 60px rgba(0, 0, 0, 0.4);
+  transform: translateZ(0px);
+}
+
+.table-felt-3d::before {
+  content: '';
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  bottom: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.table-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.table-logo {
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.players-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.table-player-seat {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.table-player-seat.active-player {
+  transform: scale(1.1);
+}
+
+.player-table-cards {
+  display: flex;
+  gap: 0.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.player-table-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.player-avatar-small {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.player-details-small {
+  text-align: center;
+}
+
+.player-name-small {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 0.125rem;
+}
+
+.player-chips-small {
+  font-size: 0.625rem;
+  color: #fbbf24;
+  font-weight: 500;
+}
+
+.dealer-button {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  z-index: 15;
+}
+
+.dealer-chip {
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(135deg, #ffffff, #e5e5e5);
+  border: 2px solid #000;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: #000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.current-player-indicator {
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+}
+
+.player-glow {
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, #10b981, transparent);
+  border-radius: 2px;
+  animation: playerGlow 2s infinite;
+}
+
+@keyframes playerGlow {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scaleX(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleX(1.2);
+  }
+}

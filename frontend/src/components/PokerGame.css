@@ -1,70 +1,141 @@
-.poker-game-container {
+.poker-game-3d {
   min-height: 100vh;
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+  background: linear-gradient(180deg, #1a2332 0%, #0f1419 50%, #000000 100%);
   color: white;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  display: flex;
+  flex-direction: column;
+  position: relative;
 }
 
-.game-header {
+.game-header-3d {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 1rem 2rem;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.game-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 1400px;
-  margin: 0 auto;
+.blinds-info {
+  color: white;
+  font-weight: 600;
 }
 
-.pot-info {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 1.5rem;
-  font-weight: bold;
+.blind-item {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.pot-label {
-  color: #94a3b8;
+.pot-info-3d {
+  text-align: center;
 }
 
 .pot-amount {
+  font-size: 1.5rem;
+  font-weight: bold;
   color: #fbbf24;
   text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
 }
 
-.game-layout {
-  display: grid;
-  grid-template-columns: 1fr 320px;
-  gap: 2rem;
+.leave-button button {
+  background: #dc2626;
+  border: none;
+}
+
+.leave-button button:hover {
+  background: #b91c1c;
+}
+
+.table-area-3d {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 2rem;
-  max-width: 1400px;
-  margin: 0 auto;
-  min-height: calc(100vh - 100px);
+  min-height: 500px;
 }
 
-.game-area {
+.bottom-area {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 2rem;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.player-hand-area {
+  display: flex;
+  align-items: flex-end;
   gap: 2rem;
 }
 
-.sidebar {
+.action-controls-3d {
   display: flex;
-  flex-direction: column;
   gap: 1rem;
+  align-items: center;
 }
 
-@media (max-width: 1200px) {
-  .game-layout {
-    grid-template-columns: 1fr;
+.action-btn {
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 0.75rem 2rem;
+  min-width: 120px;
+  transition: all 0.3s ease;
+}
+
+.fold-btn-3d {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  border: none;
+}
+
+.fold-btn-3d:hover {
+  background: linear-gradient(135deg, #b91c1c, #991b1b);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4);
+}
+
+.call-btn-3d {
+  background: linear-gradient(135deg, #1e40af, #1d4ed8);
+  border: none;
+}
+
+.call-btn-3d:hover {
+  background: linear-gradient(135deg, #1d4ed8, #1e3a8a);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(30, 64, 175, 0.4);
+}
+
+.raise-btn-3d {
+  background: linear-gradient(135deg, #059669, #047857);
+  border: none;
+}
+
+.raise-btn-3d:hover {
+  background: linear-gradient(135deg, #047857, #065f46);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
+}
+
+@media (max-width: 768px) {
+  .bottom-area {
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
   }
   
-  .sidebar {
-    order: -1;
+  .action-controls-3d {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .action-btn {
+    flex: 1;
+    min-width: auto;
   }
 }
