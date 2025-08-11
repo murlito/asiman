@@ -123,6 +123,24 @@
   opacity: 0.8;
 }
 
+/* Split layout specific adjustments */
+.hand-cards-split .playing-card-container {
+  width: 90px;
+  height: 126px;
+}
+
+.hand-cards-split .card-rank {
+  font-size: 1rem;
+}
+
+.hand-cards-split .card-suit {
+  font-size: 0.875rem;
+}
+
+.hand-cards-split .card-suit-large {
+  font-size: 2rem;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .playing-card-container {
@@ -140,5 +158,10 @@
   
   .card-suit-large {
     font-size: 1.25rem;
+  }
+  
+  .hand-cards-split .playing-card-container {
+    width: 70px;
+    height: 98px;
   }
 }

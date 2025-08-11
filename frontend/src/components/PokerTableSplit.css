@@ -1,0 +1,118 @@
+.poker-table-split-container {
+  width: 100%;
+  height: 100%;
+  perspective: 1200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.table-surface-split {
+  width: 500px;
+  height: 350px;
+  transform: rotateX(45deg) rotateY(-10deg);
+  transform-style: preserve-3d;
+}
+
+.table-felt-split {
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at center, #2d5016 0%, #1a2f0a 70%);
+  border: 10px solid #8b4513;
+  border-radius: 50%;
+  position: relative;
+  box-shadow: 
+    inset 0 0 40px rgba(0, 0, 0, 0.5),
+    0 25px 50px rgba(0, 0, 0, 0.4);
+}
+
+.table-felt-split::before {
+  content: '';
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  bottom: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.table-center-split {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.table-logo-split {
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 20px;
+  font-weight: bold;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.table-player-split {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  z-index: 10;
+}
+
+.table-player-split.current-player-split {
+  transform: translate(-50%, -50%) scale(1.15) !important;
+}
+
+.player-cards-split {
+  display: flex;
+  gap: 3px;
+  margin-bottom: 6px;
+}
+
+.player-info-split {
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 6px;
+  padding: 4px 8px;
+  text-align: center;
+  min-width: 70px;
+  backdrop-filter: blur(10px);
+}
+
+.player-name-split {
+  font-size: 11px;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 1px;
+}
+
+.player-chips-split {
+  font-size: 10px;
+  color: #fbbf24;
+  font-weight: bold;
+}
+
+.dealer-button-split {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  z-index: 20;
+}
+
+.dealer-chip-split {
+  background: white;
+  color: black;
+  border: 2px solid #333;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}

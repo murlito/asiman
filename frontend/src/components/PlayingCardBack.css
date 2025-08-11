@@ -43,3 +43,19 @@
   background: rgba(255, 255, 255, 0.1);
   border-radius: 6px;
 }
+
+/* Split layout adjustments for card backs */
+.player-cards-split .card-back-exact {
+  width: 24px;
+  height: 34px;
+}
+
+.player-cards-split .card-back-design {
+  width: 16px;
+  height: 24px;
+}
+
+.player-cards-split .card-back-design::before {
+  width: 10px;
+  height: 16px;
+}
