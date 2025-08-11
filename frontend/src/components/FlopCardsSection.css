@@ -45,6 +45,7 @@
   align-items: center;
   gap: 15px;
   flex: 1;
+  margin-top: 20px;
 }
 
 .flop-card-slot {
