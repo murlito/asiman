@@ -1,0 +1,118 @@
+.poker-table-exact-container {
+  width: 100%;
+  height: 100%;
+  perspective: 1000px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.table-surface-exact {
+  width: 600px;
+  height: 400px;
+  transform: rotateX(50deg);
+  transform-style: preserve-3d;
+}
+
+.table-felt-exact {
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at center, #2d5016 0%, #1a2f0a 70%);
+  border: 12px solid #8b4513;
+  border-radius: 50%;
+  position: relative;
+  box-shadow: 
+    inset 0 0 50px rgba(0, 0, 0, 0.5),
+    0 30px 60px rgba(0, 0, 0, 0.4);
+}
+
+.table-felt-exact::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.table-center-exact {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.table-logo-exact {
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 24px;
+  font-weight: bold;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.table-player-exact {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  z-index: 10;
+}
+
+.table-player-exact.current-player-exact {
+  transform: translate(-50%, -50%) scale(1.1) !important;
+}
+
+.player-cards-exact {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.player-info-box-exact {
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  padding: 6px 12px;
+  text-align: center;
+  min-width: 80px;
+  backdrop-filter: blur(10px);
+}
+
+.player-name-exact {
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 2px;
+}
+
+.player-chips-exact {
+  font-size: 11px;
+  color: #fbbf24;
+  font-weight: bold;
+}
+
+.dealer-button-exact {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  z-index: 20;
+}
+
+.dealer-chip-exact {
+  background: white;
+  color: black;
+  border: 2px solid #333;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
