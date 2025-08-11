@@ -3,13 +3,11 @@ import { Card, CardContent } from './ui/card';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Badge } from './ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
-import { Slider } from './ui/slider';
 import { useToast } from '../hooks/use-toast';
 import { mockData } from '../utils/mockData';
-import PokerTable from './PokerTable';
-import PlayerControls from './PlayerControls';
-import GameChat from './GameChat';
+import PokerTable3D from './PokerTable3D';
+import PlayerHand from './PlayerHand';
+import CommunityCardsTop from './CommunityCardsTop';
 import './PokerGame.css';
 
 export default function PokerGame() {
@@ -17,10 +15,10 @@ export default function PokerGame() {
   const [players, setPlayers] = useState(mockData.players);
   const [currentPlayer, setCurrentPlayer] = useState(0);
   const [communityCards, setCommunityCards] = useState([]);
-  const [pot, setPot] = useState(0);
-  const [currentBet, setCurrentBet] = useState(0);
-  const [gamePhase, setGamePhase] = useState('preflop'); // preflop, flop, turn, river, showdown
-  const [chatMessages, setChatMessages] = useState(mockData.chatMessages);
+  const [pot, setPot] = useState(1500);
+  const [currentBet, setCurrentBet] = useState(20);
+  const [gamePhase, setGamePhase] = useState('preflop');
+  const [blinds, setBlinds] = useState({ small: 10, big: 20 });
   const { toast } = useToast();
 
   useEffect(() => {
@@ -29,7 +27,7 @@ export default function PokerGame() {
       if (gamePhase === 'preflop' && communityCards.length === 0) {
         dealFlop();
       }
-    }, 3000);
+    }, 5000);
 
     return () => clearTimeout(timer);
   }, [gamePhase, communityCards.length]);
@@ -107,71 +105,72 @@ export default function PokerGame() {
     setCurrentPlayer(prev => (prev + 1) % players.length);
   };
 
-  const addChatMessage = (message) => {
-    const newMessage = {
-      id: Date.now(),
-      player: players[currentPlayer].name,
-      message,
-      timestamp: new Date().toLocaleTimeString()
-    };
-    setChatMessages(prev => [...prev, newMessage]);
-  };
-
   return (
-    <div className="poker-game-container">
-      <div className="game-header">
-        <div className="game-info">
-          <Badge variant="outline" className="text-lg px-4 py-2">
-            Texas Hold'em - {gamePhase.toUpperCase()}
-          </Badge>
-          <div className="pot-info">
-            <span className="pot-label">Pot:</span>
-            <span className="pot-amount">${pot.toLocaleString()}</span>
-          </div>
+    <div className="poker-game-3d">
+      {/* Game Info Header */}
+      <div className="game-header-3d">
+        <div className="blinds-info">
+          <div className="blind-item">Blinds: {blinds.small}/{blinds.big}</div>
+        </div>
+        <div className="pot-info-3d">
+          <div className="pot-amount">Pot: ${pot}</div>
+        </div>
+        <div className="leave-button">
+          <Button variant="destructive" size="sm">Leave</Button>
         </div>
       </div>
 
-      <div className="game-layout">
-        <div className="game-area">
-          <PokerTable 
-            players={players}
-            communityCards={communityCards}
-            currentPlayer={currentPlayer}
-            pot={pot}
-            gamePhase={gamePhase}
-          />
-          
-          <PlayerControls
-            currentPlayer={players[currentPlayer]}
-            currentBet={currentBet}
-            onPlayerAction={handlePlayerAction}
-            gamePhase={gamePhase}
+      {/* Community Cards at Top */}
+      <CommunityCardsTop 
+        cards={communityCards}
+        gamePhase={gamePhase}
+      />
+
+      {/* Main 3D Poker Table */}
+      <div className="table-area-3d">
+        <PokerTable3D 
+          players={players}
+          currentPlayer={currentPlayer}
+          dealerPosition={0}
+        />
+      </div>
+
+      {/* Player Hand and Controls at Bottom */}
+      <div className="bottom-area">
+        <div className="player-hand-area">
+          <PlayerHand 
+            player={players[currentPlayer]}
+            chips={players[currentPlayer].chips}
           />
         </div>
-
-        <div className="sidebar">
-          <GameChat 
-            messages={chatMessages}
-            onSendMessage={addChatMessage}
-            currentPlayer={players[currentPlayer].name}
-          />
+        
+        <div className="action-controls-3d">
+          <Button 
+            variant="destructive" 
+            size="lg"
+            onClick={() => handlePlayerAction('fold')}
+            className="action-btn fold-btn-3d"
+          >
+            Fold
+          </Button>
           
-          <div className="game-controls mt-4">
-            <Button 
-              onClick={dealTurn} 
-              disabled={gamePhase !== 'flop'}
-              className="w-full mb-2"
-            >
-              Deal Turn
-            </Button>
-            <Button 
-              onClick={dealRiver} 
-              disabled={gamePhase !== 'turn'}
-              className="w-full"
-            >
-              Deal River
-            </Button>
-          </div>
+          <Button 
+            variant="default" 
+            size="lg"
+            onClick={() => handlePlayerAction('call')}
+            className="action-btn call-btn-3d"
+          >
+            Call {currentBet}
+          </Button>
+          
+          <Button 
+            variant="default" 
+            size="lg"
+            onClick={() => handlePlayerAction('raise', currentBet + 50)}
+            className="action-btn raise-btn-3d"
+          >
+            Raise
+          </Button>
         </div>
       </div>
     </div>
