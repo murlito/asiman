@@ -1,0 +1,220 @@
+.poker-table-container {
+  perspective: 1000px;
+  height: 600px;
+  position: relative;
+  margin: 2rem auto;
+}
+
+.table-3d {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.table-surface {
+  width: 800px;
+  height: 500px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotateX(15deg);
+  transform-style: preserve-3d;
+  border-radius: 50%;
+}
+
+.table-felt {
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at center, #2d5016 0%, #1a2f0a 70%);
+  border: 12px solid #8b4513;
+  border-radius: 50%;
+  position: relative;
+  box-shadow: 
+    inset 0 0 50px rgba(0, 0, 0, 0.5),
+    0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.table-felt::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.community-cards-area {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.community-label {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.community-cards {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.community-card-slot {
+  width: 60px;
+  height: 84px;
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.empty-card-slot {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  border-radius: 6px;
+}
+
+.pot-area {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.pot-chips {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.chip-stack {
+  position: relative;
+  height: 60px;
+}
+
+.poker-chip {
+  width: 40px;
+  height: 8px;
+  background: linear-gradient(45deg, #fbbf24, #f59e0b, #d97706);
+  border-radius: 50%;
+  position: absolute;
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.3),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3);
+  animation: chipFall 0.5s ease-out forwards;
+}
+
+@keyframes chipFall {
+  from {
+    transform: translateY(-100px) rotateX(0deg);
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.players-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  transform-style: preserve-3d;
+}
+
+.player-seat {
+  position: absolute;
+  width: 120px;
+  height: 160px;
+  transform-origin: center center;
+  transition: all 0.3s ease;
+}
+
+.player-seat.current-player {
+  transform: scale(1.1);
+  z-index: 10;
+}
+
+.player-seat.folded {
+  opacity: 0.5;
+  filter: grayscale(100%);
+}
+
+.player-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.player-details {
+  text-align: center;
+}
+
+.player-name {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.player-chips {
+  font-size: 0.75rem;
+  color: #fbbf24;
+  font-weight: 500;
+}
+
+.bet-amount {
+  margin-top: 0.25rem;
+}
+
+.player-cards {
+  display: flex;
+  gap: 0.25rem;
+  justify-content: center;
+}
+
+.player-indicator {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.pulse-ring {
+  width: 20px;
+  height: 20px;
+  border: 3px solid #10b981;
+  border-radius: 50%;
+  animation: pulse-ring 2s infinite;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+}
