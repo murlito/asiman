@@ -1,0 +1,180 @@
+.player-controls-card {
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.controls-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.controls-header h3 {
+  color: white;
+  margin: 0;
+}
+
+.player-stats {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.primary-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.primary-actions .fold-btn {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  border: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.primary-actions .fold-btn:hover {
+  background: linear-gradient(135deg, #b91c1c, #991b1b);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4);
+}
+
+.primary-actions .check-btn {
+  border: 2px solid #10b981;
+  color: #10b981;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.primary-actions .check-btn:hover {
+  background: #10b981;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+}
+
+.primary-actions .call-btn {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  border: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.primary-actions .call-btn:hover {
+  background: linear-gradient(135deg, #1d4ed8, #1e40af);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+}
+
+.primary-actions .raise-btn {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  border: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.primary-actions .raise-btn:hover {
+  background: linear-gradient(135deg, #d97706, #b45309);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+}
+
+.primary-actions .allin-btn {
+  background: linear-gradient(135deg, #7c3aed, #6d28d9);
+  border: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.primary-actions .allin-btn:hover {
+  background: linear-gradient(135deg, #6d28d9, #5b21b6);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+}
+
+.raise-controls {
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.raise-slider {
+  margin-bottom: 1rem;
+}
+
+.raise-slider label {
+  color: white;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.raise-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.raise-input {
+  width: 120px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.raise-input:focus {
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
+}
+
+.quick-bet-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.quick-bet-buttons button {
+  flex: 1;
+  min-width: 70px;
+  font-size: 0.875rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  transition: all 0.2s ease;
+}
+
+.quick-bet-buttons button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+  .primary-actions {
+    flex-direction: column;
+  }
+  
+  .primary-actions button {
+    width: 100%;
+  }
+  
+  .quick-bet-buttons {
+    justify-content: center;
+  }
+  
+  .quick-bet-buttons button {
+    flex: none;
+    min-width: 60px;
+  }
+}
