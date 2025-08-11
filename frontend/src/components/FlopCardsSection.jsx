@@ -14,8 +14,6 @@ export default function FlopCardsSection({ cards, gameInfo }) {
         <Button variant="destructive" size="sm">Leave</Button>
       </div>
       
-      <div className="flop-title">FLOP CARDS</div>
-      
       <div className="flop-cards">
         {Array.from({ length: 5 }).map((_, index) => (
           <div key={index} className="flop-card-slot">
