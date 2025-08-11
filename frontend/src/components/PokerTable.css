@@ -145,6 +145,7 @@
   height: 160px;
   transform-origin: center center;
   transition: all 0.3s ease;
+  z-index: 5;
 }
 
 .player-seat.current-player {
