@@ -15,9 +15,9 @@ export default function PokerTable({ players, communityCards, currentPlayer, pot
         key={player.id}
         className={`player-seat ${isCurrentPlayer ? 'current-player' : ''} ${player.folded ? 'folded' : ''}`}
         style={{
-          transform: `rotateY(${position.rotation}deg) translateZ(280px)`,
           left: position.x,
-          top: position.y
+          top: position.y,
+          transform: `translate(-50%, -50%) rotateY(${position.rotation}deg)`
         }}
       >
         <div className="player-info">
