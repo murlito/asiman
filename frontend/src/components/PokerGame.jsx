@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import { useToast } from '../hooks/use-toast';
 import { mockData } from '../utils/mockData';
-import PokerTableSplit from './PokerTableSplit';
-import PlayerHandSplit from './PlayerHandSplit';
-import CommunityCardsSplit from './CommunityCardsSplit';
-import './PokerGameSplit.css';
+import PokerTableSection from './PokerTableSection';
+import UserCardsSection from './UserCardsSection';
+import FlopCardsSection from './FlopCardsSection';
+import './PokerGameNew.css';
 
 export default function PokerGame() {
   const [players, setPlayers] = useState(mockData.players);
@@ -69,68 +69,33 @@ export default function PokerGame() {
   };
 
   return (
-    <div className="poker-game-split">
-      {/* Top Section - Community Cards */}
-      <div className="top-section-split">
-        <div className="game-header-split">
-          <div className="blinds-pot-info">
-            <span className="blinds-info">Blinds: {gameInfo.blinds.small}/{gameInfo.blinds.big}</span>
-            <span className="pot-info">Pot: ${gameInfo.pot}</span>
-          </div>
-          <Button variant="destructive" size="sm">Leave</Button>
-        </div>
-        
-        <CommunityCardsSplit 
+    <div className="poker-game-new">
+      {/* Top Section - Flop Cards */}
+      <div className="flop-section">
+        <FlopCardsSection 
           cards={communityCards}
-          gamePhase={gameInfo.phase}
+          gameInfo={gameInfo}
         />
       </div>
 
-      {/* Bottom Section - Split into Table (left) and Player Hand (right) */}
-      <div className="bottom-section-split">
-        {/* Left Side - Poker Table */}
-        <div className="table-section-split">
-          <PokerTableSplit 
+      {/* Bottom Section - Table and User Cards */}
+      <div className="bottom-sections">
+        {/* Left - Poker Table */}
+        <div className="table-section">
+          <PokerTableSection 
             players={players}
             dealerPosition={0}
+            onPlayerAction={handlePlayerAction}
+            gameInfo={gameInfo}
           />
         </div>
 
-        {/* Right Side - Player Hand and Actions */}
-        <div className="player-section-split">
-          <PlayerHandSplit 
+        {/* Right - User Cards */}
+        <div className="user-cards-section">
+          <UserCardsSection 
             cards={currentPlayerHand}
             chips={currentPlayerChips}
           />
-          
-          <div className="action-buttons-split">
-            <Button 
-              variant="destructive" 
-              size="lg"
-              onClick={() => handlePlayerAction('fold')}
-              className="action-btn-split fold-split"
-            >
-              Fold
-            </Button>
-            
-            <Button 
-              variant="default" 
-              size="lg"
-              onClick={() => handlePlayerAction('call')}
-              className="action-btn-split call-split"
-            >
-              Call {gameInfo.currentBet}
-            </Button>
-            
-            <Button 
-              variant="default" 
-              size="lg"
-              onClick={() => handlePlayerAction('raise', 50)}
-              className="action-btn-split raise-split"
-            >
-              Raise
-            </Button>
-          </div>
         </div>
       </div>
     </div>

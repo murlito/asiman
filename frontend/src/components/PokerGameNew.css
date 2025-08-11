@@ -1,0 +1,63 @@
+.poker-game-new {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Arial', sans-serif;
+  background: #1a1a1a;
+  color: white;
+  overflow: hidden;
+}
+
+/* Top Section - Flop Cards (Yellow background) */
+.flop-section {
+  height: 30vh;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Bottom Section - Table and User Cards */
+.bottom-sections {
+  height: 70vh;
+  display: flex;
+}
+
+/* Left Section - Poker Table (Dark green) */
+.table-section {
+  width: 70%;
+  background: linear-gradient(135deg, #2d5016, #1a2f0a);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Right Section - User Cards (Light green) */
+.user-cards-section {
+  width: 30%;
+  background: linear-gradient(135deg, #10b981, #059669);
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .flop-section {
+    height: 25vh;
+  }
+  
+  .bottom-sections {
+    height: 75vh;
+    flex-direction: column;
+  }
+  
+  .table-section {
+    width: 100%;
+    height: 60%;
+  }
+  
+  .user-cards-section {
+    width: 100%;
+    height: 40%;
+  }
+}
