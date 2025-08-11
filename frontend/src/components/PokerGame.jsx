@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent } from './ui/card';
 import { Button } from './ui/button';
-import { Badge } from './ui/badge';
 import { useToast } from '../hooks/use-toast';
 import { mockData } from '../utils/mockData';
-import PokerTableExact from './PokerTableExact';
-import PlayerHandBottom from './PlayerHandBottom';
-import CommunityCardsTop from './CommunityCardsTop';
-import './PokerGameExact.css';
+import PokerTableSplit from './PokerTableSplit';
+import PlayerHandSplit from './PlayerHandSplit';
+import CommunityCardsSplit from './CommunityCardsSplit';
+import './PokerGameSplit.css';
 
 export default function PokerGame() {
   const [players, setPlayers] = useState(mockData.players);
@@ -71,68 +69,68 @@ export default function PokerGame() {
   };
 
   return (
-    <div className="poker-game-exact">
-      {/* Top Header */}
-      <div className="game-header-exact">
-        <div className="header-left">
-          <div className="blinds-display">Blinds: {gameInfo.blinds.small}/{gameInfo.blinds.big}</div>
-          <div className="pot-display">Pot: ${gameInfo.pot}</div>
-        </div>
-        <div className="header-right">
+    <div className="poker-game-split">
+      {/* Top Section - Community Cards */}
+      <div className="top-section-split">
+        <div className="game-header-split">
+          <div className="blinds-pot-info">
+            <span className="blinds-info">Blinds: {gameInfo.blinds.small}/{gameInfo.blinds.big}</span>
+            <span className="pot-info">Pot: ${gameInfo.pot}</span>
+          </div>
           <Button variant="destructive" size="sm">Leave</Button>
         </div>
-      </div>
-
-      {/* Community Cards */}
-      <CommunityCardsTop 
-        cards={communityCards}
-        gamePhase={gameInfo.phase}
-      />
-
-      {/* Main Table Area */}
-      <div className="table-container-exact">
-        <PokerTableExact 
-          players={players}
-          dealerPosition={0}
+        
+        <CommunityCardsSplit 
+          cards={communityCards}
+          gamePhase={gameInfo.phase}
         />
       </div>
 
-      {/* Bottom Area */}
-      <div className="bottom-section-exact">
-        <div className="player-hand-section">
-          <PlayerHandBottom 
+      {/* Bottom Section - Split into Table (left) and Player Hand (right) */}
+      <div className="bottom-section-split">
+        {/* Left Side - Poker Table */}
+        <div className="table-section-split">
+          <PokerTableSplit 
+            players={players}
+            dealerPosition={0}
+          />
+        </div>
+
+        {/* Right Side - Player Hand and Actions */}
+        <div className="player-section-split">
+          <PlayerHandSplit 
             cards={currentPlayerHand}
             chips={currentPlayerChips}
           />
-        </div>
-        
-        <div className="action-buttons-exact">
-          <Button 
-            variant="destructive" 
-            size="lg"
-            onClick={() => handlePlayerAction('fold')}
-            className="action-btn-exact fold-exact"
-          >
-            Fold
-          </Button>
           
-          <Button 
-            variant="default" 
-            size="lg"
-            onClick={() => handlePlayerAction('call')}
-            className="action-btn-exact call-exact"
-          >
-            Call {gameInfo.currentBet}
-          </Button>
-          
-          <Button 
-            variant="default" 
-            size="lg"
-            onClick={() => handlePlayerAction('raise', 50)}
-            className="action-btn-exact raise-exact"
-          >
-            Raise
-          </Button>
+          <div className="action-buttons-split">
+            <Button 
+              variant="destructive" 
+              size="lg"
+              onClick={() => handlePlayerAction('fold')}
+              className="action-btn-split fold-split"
+            >
+              Fold
+            </Button>
+            
+            <Button 
+              variant="default" 
+              size="lg"
+              onClick={() => handlePlayerAction('call')}
+              className="action-btn-split call-split"
+            >
+              Call {gameInfo.currentBet}
+            </Button>
+            
+            <Button 
+              variant="default" 
+              size="lg"
+              onClick={() => handlePlayerAction('raise', 50)}
+              className="action-btn-split raise-split"
+            >
+              Raise
+            </Button>
+          </div>
         </div>
       </div>
     </div>
