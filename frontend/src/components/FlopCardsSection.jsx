@@ -186,78 +186,7 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
     recognizeCardFromImage(imageData, ctx);
   };
 
-  // Demo card scanning when real camera is not available
-  const simulateDemoCardScan = () => {
-    const statusElement = document.getElementById('camera-status');
-    
-    if (statusElement) {
-      statusElement.textContent = 'Demo: Scanning...';
-      statusElement.style.color = '#f59e0b';
-    }
-    
-    // Simulate scanning delay
-    setTimeout(() => {
-      // 70% chance of detecting a card in demo mode
-      const shouldDetectCard = Math.random() > 0.3;
-      
-      if (shouldDetectCard) {
-        // Create realistic demo card detection
-        const demoCards = [
-          { rank: 'A', suit: 'spades', name: 'Ace of Spades', color: 'black' },
-          { rank: 'K', suit: 'hearts', name: 'King of Hearts', color: 'red' },
-          { rank: 'Q', suit: 'diamonds', name: 'Queen of Diamonds', color: 'red' },
-          { rank: 'J', suit: 'clubs', name: 'Jack of Clubs', color: 'black' },
-          { rank: '10', suit: 'spades', name: '10 of Spades', color: 'black' },
-          { rank: '9', suit: 'hearts', name: '9 of Hearts', color: 'red' },
-          { rank: '8', suit: 'diamonds', name: '8 of Diamonds', color: 'red' },
-          { rank: '7', suit: 'clubs', name: '7 of Clubs', color: 'black' }
-        ];
-        
-        const selectedCard = demoCards[Math.floor(Math.random() * demoCards.length)];
-        const confidence = 0.75 + Math.random() * 0.2; // 75-95% confidence
-        
-        const cardWithConfidence = {
-          ...selectedCard,
-          confidence: confidence
-        };
-        
-        setRecognizedCard(cardWithConfidence);
-        
-        // Display recognition result
-        const displayElement = document.getElementById('recognized-card');
-        if (displayElement) {
-          displayElement.textContent = `Demo: ${cardWithConfidence.name} (${Math.round(confidence * 100)}%)`;
-          displayElement.style.display = 'block';
-          displayElement.style.background = 'rgba(0, 150, 0, 0.8)';
-          
-          setTimeout(() => {
-            displayElement.style.display = 'none';
-          }, 4000);
-        }
-        
-        console.log('Demo: Card detected', cardWithConfidence);
-      } else {
-        // No card detected in demo
-        const displayElement = document.getElementById('recognized-card');
-        if (displayElement) {
-          displayElement.textContent = 'Demo: No card in view';
-          displayElement.style.display = 'block';
-          displayElement.style.background = 'rgba(150, 150, 0, 0.8)';
-          
-          setTimeout(() => {
-            displayElement.style.display = 'none';
-          }, 3000);
-        }
-        
-        console.log('Demo: No card detected');
-      }
-      
-      if (statusElement) {
-        statusElement.textContent = 'Camera: Demo Mode';
-        statusElement.style.color = '#8b5cf6';
-      }
-    }, 1500); // Longer delay for more realistic feeling
-  };
+
 
   const recognizeCardFromImage = (imageData, ctx) => {
     console.log('Auto-analyzing image for cards...');
