@@ -511,16 +511,11 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
               <canvas id="camera-canvas" style={{ display: 'none' }}></canvas>
               <div className="camera-overlay">
                 <div className="scan-frame"></div>
-                <div className="scan-instruction">Show card to camera</div>
+                <div className="scan-instruction">Card Scanner</div>
               </div>
               <div id="recognized-card" className="recognized-card-display"></div>
             </div>
-            <div className="camera-controls">
-              <button id="start-camera" className="camera-btn">Start Camera</button>
-              <button id="scan-card" className="camera-btn">Scan Card</button>
-              <button id="demo-mode" className="camera-btn" onClick={() => enableDemoMode()}>Demo Mode</button>
-            </div>
-            <div id="camera-status" className="camera-status">Camera: Off - Click "Start Camera" or "Demo Mode"</div>
+            <div id="camera-status" className="camera-status">Camera: Initializing...</div>
           </div>
         </div>
       </div>
