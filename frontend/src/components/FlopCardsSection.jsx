@@ -180,10 +180,26 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
 
     const video = document.getElementById('camera-video');
     const canvas = document.getElementById('camera-canvas');
+    const statusElement = document.getElementById('camera-status');
     
-    if (!video || !canvas) {
-      console.error('Video or canvas element not found');
+    if (!canvas) {
+      console.error('Canvas element not found');
       alert('Camera elements not found');
+      return;
+    }
+
+    // Check if we're in demo mode or real camera mode
+    const isDemo = statusElement && statusElement.textContent.includes('Demo');
+    
+    if (isDemo) {
+      console.log('Running in demo mode - simulating card detection');
+      simulateDemoCardScan();
+      return;
+    }
+
+    if (!video) {
+      console.error('Video element not found');
+      alert('Camera video not found');
       return;
     }
     
@@ -205,7 +221,6 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
     ctx.drawImage(video, 0, 0);
     
     // Show scanning feedback
-    const statusElement = document.getElementById('camera-status');
     if (statusElement) {
       statusElement.textContent = 'Camera: Scanning...';
       statusElement.style.color = '#f59e0b';
@@ -225,6 +240,44 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
         statusElement.style.color = '#059669';
       }
     }, 2000);
+  };
+
+  // Demo card scanning when real camera is not available
+  const simulateDemoCardScan = () => {
+    const statusElement = document.getElementById('camera-status');
+    
+    if (statusElement) {
+      statusElement.textContent = 'Demo: Scanning...';
+      statusElement.style.color = '#f59e0b';
+    }
+    
+    // Simulate scanning delay
+    setTimeout(() => {
+      // Create mock image data for demo
+      const mockImageData = {
+        data: new Uint8Array(640 * 480 * 4).fill(128), // Gray image
+        width: 640,
+        height: 480
+      };
+      
+      // Add some "card-like" bright areas for realistic detection
+      for (let i = 0; i < mockImageData.data.length; i += 4) {
+        if (Math.random() > 0.7) { // 30% chance of bright pixel
+          mockImageData.data[i] = 255;     // R
+          mockImageData.data[i + 1] = 255; // G  
+          mockImageData.data[i + 2] = 255; // B
+          mockImageData.data[i + 3] = 255; // A
+        }
+      }
+      
+      console.log('Demo: Simulating card recognition');
+      recognizeCardFromImage(mockImageData, null);
+      
+      if (statusElement) {
+        statusElement.textContent = 'Demo: Ready';
+        statusElement.style.color = '#8b5cf6';
+      }
+    }, 1000);
   };
 
   const recognizeCardFromImage = (imageData, ctx) => {
