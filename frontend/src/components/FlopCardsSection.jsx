@@ -24,10 +24,15 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
     const initCamera = () => {
       const startCameraBtn = document.getElementById('start-camera');
       const scanCardBtn = document.getElementById('scan-card');
+      const demoBtn = document.getElementById('demo-mode');
       
       if (startCameraBtn && scanCardBtn) {
         startCameraBtn.addEventListener('click', startCamera);
         scanCardBtn.addEventListener('click', scanCard);
+      }
+      
+      if (demoBtn) {
+        demoBtn.addEventListener('click', () => enableDemoMode());
       }
     };
 
