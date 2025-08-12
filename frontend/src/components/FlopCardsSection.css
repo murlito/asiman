@@ -16,8 +16,13 @@
 
 .game-info {
   display: flex;
-  gap: 20px;
-  align-items: center;
+  align-items: flex-start;
+}
+
+.blinds-pot-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .blinds-info, .pot-info {
