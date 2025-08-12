@@ -58,11 +58,11 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
         throw new Error('Video element not found');
       }
 
-      // Enhanced camera constraints for better compatibility
+      // Enhanced camera constraints for horizontal card scanning
       const constraints = {
         video: {
-          width: { ideal: 640, min: 320 },
-          height: { ideal: 480, min: 240 },
+          width: { ideal: 800, min: 400 }, // Wider for horizontal cards
+          height: { ideal: 600, min: 300 },
           frameRate: { ideal: 30, min: 15 },
           facingMode: 'environment', // Prefer back camera
           autoGainControl: true,
