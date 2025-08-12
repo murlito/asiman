@@ -8,8 +8,10 @@ export default function FlopCardsSection({ cards, gameInfo }) {
     <div className="flop-cards-container">
       <div className="flop-header">
         <div className="game-info">
-          <span className="blinds-info">Blinds: {gameInfo.blinds.small}/{gameInfo.blinds.big}</span>
-          <span className="pot-info">Pot: ${gameInfo.pot}</span>
+          <div className="blinds-pot-stack">
+            <span className="blinds-info">Blinds: {gameInfo.blinds.small}/{gameInfo.blinds.big}</span>
+            <span className="pot-info">Pot: ${gameInfo.pot}</span>
+          </div>
         </div>
         <Button variant="destructive" size="sm">Leave</Button>
       </div>
