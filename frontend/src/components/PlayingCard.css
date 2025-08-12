@@ -131,12 +131,14 @@
   height: 100%;
   position: relative;
   transform-style: preserve-3d;
-  transition: transform 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   cursor: pointer;
 }
 
 .playing-card:hover {
-  transform: none;
+  transform: translateY(-8px) scale(1.05);
+  z-index: 10;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
 }
 
 .playing-card.face-down .card-front {
