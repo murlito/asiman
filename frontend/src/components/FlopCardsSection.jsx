@@ -400,8 +400,8 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
     // Enhanced rank detection based on symbol pattern analysis
     const rankInfo = analyzeSymbolPatterns(symbolPixels, cornerBrightness);
     
-    // Reject if rank confidence is too low
-    if (rankInfo.confidence < 0.4) {
+    // More lenient rank confidence check
+    if (rankInfo.confidence < 0.3) { // Reduced from 0.4 to 0.3
       console.log('Rejected: low rank confidence', rankInfo.confidence);
       return null;
     }
