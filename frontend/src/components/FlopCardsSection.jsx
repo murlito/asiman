@@ -148,7 +148,7 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
 
 
 
-  const scanCard = () => {
+  const scanCard = async () => {
     if (!isCameraActive) {
       console.log('Camera not active, skipping scan');
       return;
@@ -183,7 +183,7 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     
     // Analyze the image for card recognition
-    recognizeCardFromImage(imageData, ctx);
+    await recognizeCardFromImage(imageData, ctx);
   };
 
 
