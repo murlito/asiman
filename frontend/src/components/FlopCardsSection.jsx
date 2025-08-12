@@ -373,23 +373,23 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
       }
     });
     
-    // Strict validation - must have enough white background
+    // More lenient validation - must have some white background
     const backgroundRatio = whitePixels / corners.length;
-    if (backgroundRatio < 0.6) { // Must be at least 60% white background
+    if (backgroundRatio < 0.4) { // Reduced from 0.6 to 0.4
       console.log('Rejected: insufficient white background', backgroundRatio);
       return null;
     }
     
     // Must have clear color distinction
     const totalColorPixels = redPixels + blackPixels;
-    if (totalColorPixels < 20) { // Must have at least 20 colored pixels
+    if (totalColorPixels < 10) { // Reduced from 20 to 10
       console.log('Rejected: insufficient colored pixels', totalColorPixels);
       return null;
     }
     
-    // Determine suit based on color analysis with higher confidence threshold
-    const colorConfidence = Math.abs(redPixels - blackPixels) / totalColorPixels;
-    if (colorConfidence < 0.3) { // Colors must be clearly distinct
+    // Determine suit based on color analysis with lower confidence threshold
+    const colorConfidence = totalColorPixels > 0 ? Math.abs(redPixels - blackPixels) / totalColorPixels : 0;
+    if (colorConfidence < 0.2) { // Reduced from 0.3 to 0.2
       console.log('Rejected: unclear color distinction', colorConfidence);
       return null;
     }
