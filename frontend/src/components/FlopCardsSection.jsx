@@ -177,15 +177,16 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
   };
 
   const scanCard = () => {
-    console.log('Scan card clicked, camera active:', isCameraActive);
+    console.log('Scan card clicked');
     
     const statusElement = document.getElementById('camera-status');
     const isDemo = statusElement && statusElement.textContent.includes('Demo');
+    const isActive = statusElement && statusElement.textContent.includes('Active');
     
-    // Allow scanning in demo mode even if isCameraActive is false
-    if (!isCameraActive && !isDemo) {
-      console.log('Camera not active and not in demo mode, showing alert');
-      alert('Please start the camera first or enable Demo Mode');
+    // Only allow scanning if camera is active OR in demo mode
+    if (!isDemo && !isActive) {
+      console.log('Camera not active and not in demo mode');
+      alert('Please start the camera first or enable Demo Mode to scan cards');
       return;
     }
 
@@ -198,13 +199,14 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
       return;
     }
 
-    // Check if we're in demo mode or real camera mode
+    // Demo mode scanning
     if (isDemo) {
       console.log('Running in demo mode - simulating card detection');
       simulateDemoCardScan();
       return;
     }
 
+    // Real camera scanning
     if (!video) {
       console.error('Video element not found');
       alert('Camera video not found');
