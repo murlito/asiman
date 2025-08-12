@@ -203,6 +203,11 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
       console.log('Card recognized:', cardInfo);
       setRecognizedCard(cardInfo);
       
+      // Call the parent callback to update user cards
+      if (onCardScanned) {
+        onCardScanned(cardInfo);
+      }
+      
       // Display recognition result
       const displayElement = document.getElementById('recognized-card');
       if (displayElement) {
