@@ -129,7 +129,7 @@ export default function PokerTableSection({ players, dealerPosition, onPlayerAct
             {/* User cards below */}
             <div className="hand-cards-container">
               {userCards && userCards.map((card, index) => (
-                <div key={index} className="user-card-hover-container">
+                <div key={`${card.rank}-${card.suit}-${index}`} className={`user-card-hover-container ${index === newCardIndex ? 'new-scanned-card' : ''}`}>
                   <PlayingCard 
                     card={card}
                     faceDown={true}
