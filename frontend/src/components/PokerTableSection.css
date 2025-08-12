@@ -233,7 +233,7 @@
 }
 
 .user-card-hover-container:hover .playing-card.face-down .card-back {  
-  transform: rotateY(180deg);
+  transform: rotateY(-180deg);
 }
 
 .user-card-hover-container:active .playing-card.face-down .card-front {
@@ -241,7 +241,7 @@
 }
 
 .user-card-hover-container:active .playing-card.face-down .card-back {
-  transform: rotateY(180deg);
+  transform: rotateY(-180deg);
 }
 
 .hand-cards-container .playing-card-container {
