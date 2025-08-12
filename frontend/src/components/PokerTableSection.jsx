@@ -60,17 +60,40 @@ export default function PokerTableSection({ players, dealerPosition, onPlayerAct
   return (
     <div className="poker-table-section-container">
       <div className="table-and-cards-container">
-        <div className="table-area-new">
-          <div className="table-surface-new">
-            <div className="table-felt-new">
-              {/* Table center logo */}
-              <div className="table-center-new">
-                <div className="table-logo-new">POKER</div>
+        <div className="table-area-with-buttons">
+          <div className="table-area-new">
+            <div className="table-surface-new">
+              <div className="table-felt-new">
+                {/* Table center logo */}
+                <div className="table-center-new">
+                  <div className="table-logo-new">POKER</div>
+                </div>
+                
+                {/* All 8 players */}
+                {players.map((player, index) => renderPlayer(player, index))}
               </div>
-              
-              {/* All 8 players */}
-              {players.map((player, index) => renderPlayer(player, index))}
             </div>
+          </div>
+          
+          {/* Action Buttons under table */}
+          <div className="table-actions">
+            <Button 
+              variant="destructive" 
+              size="lg"
+              onClick={() => onPlayerAction('fold')}
+              className="action-btn-new fold-btn-new"
+            >
+              FOLD
+            </Button>
+            
+            <Button 
+              variant="default" 
+              size="lg"
+              onClick={() => onPlayerAction('raise', 50)}
+              className="action-btn-new raise-btn-new"
+            >
+              RAISE
+            </Button>
           </div>
         </div>
         
@@ -92,27 +115,6 @@ export default function PokerTableSection({ players, dealerPosition, onPlayerAct
             </div>
           </div>
         </div>
-      </div>
-      
-      {/* Action Buttons */}
-      <div className="table-actions">
-        <Button 
-          variant="destructive" 
-          size="lg"
-          onClick={() => onPlayerAction('fold')}
-          className="action-btn-new fold-btn-new"
-        >
-          FOLD
-        </Button>
-        
-        <Button 
-          variant="default" 
-          size="lg"
-          onClick={() => onPlayerAction('raise', 50)}
-          className="action-btn-new raise-btn-new"
-        >
-          RAISE
-        </Button>
       </div>
     </div>
   );
