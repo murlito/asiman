@@ -43,11 +43,26 @@ const DealerDashboard = () => {
 
   const loadGameState = async (gameId) => {
     try {
-      // We need a special dealer endpoint to see all player cards
-      const response = await fetch(`${getBackendUrl()}/api/dealer/game-state/${gameId}`);
+      const backendUrl = getBackendUrl();
+      // Use dealer-specific endpoint to see all cards
+      const response = await fetch(`${backendUrl}/api/dealer/game-state/${gameId}`);
+      console.log('Game state response status:', response.status);
+      
       if (response.ok) {
         const data = await response.json();
+        console.log('Game state data:', data);
         setGameState(data);
+      } else {
+        console.error('Failed to load game state:', response.status);
+        // Fallback to regular endpoint if dealer endpoint fails
+        const fallbackResponse = await fetch(`${backendUrl}/api/poker/games`);
+        if (fallbackResponse.ok) {
+          const fallbackData = await fallbackResponse.json();
+          const game = fallbackData.games.find(g => g.game_id === gameId);
+          if (game) {
+            setGameState(game);
+          }
+        }
       }
     } catch (err) {
       console.error('Failed to load game state:', err);
