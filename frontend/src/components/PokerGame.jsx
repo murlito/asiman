@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import { useToast } from '../hooks/use-toast';
+import { Toaster } from './ui/toaster';
 import { mockData } from '../utils/mockData';
 import PokerTableSection from './PokerTableSection';
 import UserCardsSection from './UserCardsSection';
