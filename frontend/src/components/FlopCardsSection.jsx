@@ -247,7 +247,7 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
       console.log('Отправляю кадр на OpenCV сервер...');
       
       // Send frame to backend for OpenCV processing  
-      const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_URL || process.env.REACT_APP_BACKEND_URL}/api/scan-cards`, {
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_URL || process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001'}/api/scan-cards`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
