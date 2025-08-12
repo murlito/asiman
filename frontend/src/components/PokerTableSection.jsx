@@ -102,7 +102,7 @@ export default function PokerTableSection({ players, dealerPosition, onPlayerAct
           <div className="user-hand-cards-table">
             {/* Chips info moved to the top */}
             <div className="chips-info-table">
-              <div className="chips-label-table">Your Stack</div>
+              <div className="chips-label-table">Your Stack:</div>
               <div className="chips-amount-table">${userChips}</div>
             </div>
             
