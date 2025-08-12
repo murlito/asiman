@@ -1,18 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from './ui/button';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from './ui/alert-dialog';
 import PlayingCard from './PlayingCard';
 import './FlopCardsSection.css';
 
 export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
-  const handleLeave = () => {
-    if (window.confirm('Are you sure you want to leave the game?')) {
-      if (onLeave) {
-        onLeave();
-      } else {
-        // Default behavior - show alert or reload
-        alert('Leaving game...');
-        window.location.reload();
-      }
+  const [isLeaveDialogOpen, setIsLeaveDialogOpen] = useState(false);
+
+  const handleConfirmLeave = () => {
+    setIsLeaveDialogOpen(false);
+    if (onLeave) {
+      onLeave();
+    } else {
+      // Default behavior - show alert or reload
+      alert('Leaving game...');
+      window.location.reload();
     }
   };
 
