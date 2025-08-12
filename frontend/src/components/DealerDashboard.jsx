@@ -20,7 +20,15 @@ const DealerDashboard = () => {
   }, [selectedGame]);
 
   const getBackendUrl = () => {
-    return import.meta.env.VITE_REACT_APP_BACKEND_URL || process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
+    // For development, always use localhost
+    if (window.location.hostname === 'localhost') {
+      return 'http://localhost:8001';
+    }
+    
+    // For production, use environment variable
+    return import.meta.env.VITE_REACT_APP_BACKEND_URL || 
+           process.env.REACT_APP_BACKEND_URL || 
+           'http://localhost:8001';
   };
 
   const loadGames = async () => {
