@@ -87,17 +87,12 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
     // Draw current video frame to canvas
     ctx.drawImage(video, 0, 0);
     
-    // Convert to base64 for processing
-    const imageData = canvas.toDataURL('image/jpeg', 0.8);
-    
     // Get image data for analysis
-    const pixelData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     
     // Analyze the image for card recognition
-    recognizeCardFromImage(pixelData, ctx);
+    recognizeCardFromImage(imageData, ctx);
   };
-
-  const scanCard = () => {
     if (!isCameraActive) {
       alert('Please start the camera first');
       return;
