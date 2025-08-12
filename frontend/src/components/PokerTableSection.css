@@ -8,13 +8,18 @@
 
 
 
-.table-area-new {
+.table-and-cards-container {
+  display: flex;
+  align-items: center;
+  gap: 40px;
   flex: 1;
+}
+
+.table-area-new {
   perspective: 1200px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 20px;
 }
 
 .table-surface-new {
