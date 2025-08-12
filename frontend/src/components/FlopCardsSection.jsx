@@ -169,10 +169,11 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
       statusElement.style.color = '#8b5cf6';
     }
     
-    const startBtn = document.getElementById('start-camera');
-    if (startBtn) {
-      startBtn.textContent = 'Demo Mode';
-      startBtn.style.background = '#8b5cf6';
+    // Don't change Start Camera button - only change Demo Mode button
+    const demoBtn = document.getElementById('demo-mode');
+    if (demoBtn) {
+      demoBtn.textContent = 'Demo Active';
+      demoBtn.style.background = '#8b5cf6';
     }
     
     // Enable camera active state for demo mode
