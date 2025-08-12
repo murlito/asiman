@@ -9,6 +9,9 @@ const LoginPage = ({ onLogin }) => {
   // Load available games
   useEffect(() => {
     loadGames();
+    // Refresh games every 5 seconds
+    const interval = setInterval(loadGames, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   const loadGames = async () => {
@@ -18,44 +21,6 @@ const LoginPage = ({ onLogin }) => {
       setGames(data.games || []);
     } catch (err) {
       console.error('Failed to load games:', err);
-    }
-  };
-
-  const createNewGame = async () => {
-    if (!playerName.trim()) {
-      setError('Please enter your name');
-      return;
-    }
-
-    setLoading(true);
-    setError('');
-
-    try {
-      // Create new game
-      const createResponse = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_URL || process.env.REACT_APP_BACKEND_URL}/api/poker/create-game`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          small_blind: 10,
-          big_blind: 20
-        })
-      });
-
-      const createData = await createResponse.json();
-      
-      if (createResponse.ok) {
-        // Join the created game
-        await joinGame(createData.game_id);
-      } else {
-        setError('Failed to create game');
-      }
-    } catch (err) {
-      setError('Failed to create game');
-      console.error('Create game error:', err);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -109,7 +74,7 @@ const LoginPage = ({ onLogin }) => {
     <div className="login-container">
       <div className="login-card">
         <h1>🃏 Texas Hold'em Poker</h1>
-        <p>Join or create a poker game</p>
+        <p>Join an available poker game</p>
         
         <div className="form-group">
           <input
@@ -117,34 +82,29 @@ const LoginPage = ({ onLogin }) => {
             placeholder="Enter your name"
             value={playerName}
             onChange={(e) => setPlayerName(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && createNewGame()}
             disabled={loading}
           />
         </div>
 
         {error && <div className="error-message">{error}</div>}
 
-        <div className="game-actions">
-          <button 
-            onClick={createNewGame}
-            disabled={loading || !playerName.trim()}
-            className="primary-button"
-          >
-            {loading ? 'Creating...' : 'Create New Game'}
-          </button>
-        </div>
-
-        {games.length > 0 && (
-          <div className="available-games">
-            <h3>Available Games</h3>
+        <div className="available-games">
+          <h3>Available Games ({games.length})</h3>
+          
+          {games.length === 0 ? (
+            <div className="no-games">
+              <p>No games available at the moment.</p>
+              <p>Please wait for someone to create a game.</p>
+            </div>
+          ) : (
             <div className="games-list">
               {games.map((game) => (
                 <div key={game.game_id} className="game-item">
                   <div className="game-info">
-                    <div>Players: {game.player_count}/9</div>
-                    <div>Pot: ${game.pot}</div>
-                    <div>State: {game.state}</div>
-                    <div>Hand: #{game.hand_number}</div>
+                    <div><strong>Players:</strong> {game.player_count}/9</div>
+                    <div><strong>Pot:</strong> ${game.pot}</div>
+                    <div><strong>State:</strong> {game.state.replace('_', ' ')}</div>
+                    <div><strong>Hand:</strong> #{game.hand_number}</div>
                   </div>
                   <button
                     onClick={() => joinGame(game.game_id)}
@@ -156,11 +116,12 @@ const LoginPage = ({ onLogin }) => {
                 </div>
               ))}
             </div>
-            <button onClick={loadGames} className="refresh-button">
-              Refresh Games
-            </button>
-          </div>
-        )}
+          )}
+          
+          <button onClick={loadGames} className="refresh-button">
+            🔄 Refresh Games
+          </button>
+        </div>
       </div>
 
       <style jsx>{`
@@ -228,37 +189,7 @@ const LoginPage = ({ onLogin }) => {
           border: 1px solid rgba(239, 68, 68, 0.2);
         }
 
-        .game-actions {
-          margin-bottom: 2rem;
-        }
-
-        .primary-button {
-          background: linear-gradient(45deg, #22d3ee, #a855f7);
-          color: white;
-          border: none;
-          padding: 12px 24px;
-          border-radius: 8px;
-          font-size: 16px;
-          font-weight: 600;
-          cursor: pointer;
-          width: 100%;
-          transition: all 0.2s;
-        }
-
-        .primary-button:hover:not(:disabled) {
-          transform: translateY(-1px);
-          box-shadow: 0 4px 12px rgba(34, 211, 238, 0.4);
-        }
-
-        .primary-button:disabled {
-          opacity: 0.5;
-          cursor: not-allowed;
-          transform: none;
-        }
-
         .available-games {
-          border-top: 1px solid rgba(71, 85, 105, 0.3);
-          padding-top: 2rem;
           text-align: left;
         }
 
@@ -268,8 +199,21 @@ const LoginPage = ({ onLogin }) => {
           color: #e2e8f0;
         }
 
+        .no-games {
+          text-align: center;
+          padding: 2rem 1rem;
+          color: #94a3b8;
+          background: rgba(15, 23, 42, 0.6);
+          border-radius: 8px;
+          border: 1px solid rgba(71, 85, 105, 0.3);
+          margin-bottom: 1rem;
+        }
+
+        .no-games p {
+          margin: 0.5rem 0;
+        }
+
         .games-list {
-          space-y: 1rem;
           margin-bottom: 1rem;
         }
 
@@ -277,7 +221,7 @@ const LoginPage = ({ onLogin }) => {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: 12px;
+          padding: 16px;
           background: rgba(15, 23, 42, 0.6);
           border-radius: 8px;
           border: 1px solid rgba(71, 85, 105, 0.3);
@@ -290,37 +234,45 @@ const LoginPage = ({ onLogin }) => {
         }
 
         .game-info div {
-          margin-bottom: 2px;
+          margin-bottom: 4px;
+        }
+
+        .game-info strong {
+          color: #e2e8f0;
         }
 
         .join-button {
-          background: rgba(34, 197, 94, 0.8);
+          background: linear-gradient(45deg, #22c55e, #16a34a);
           color: white;
           border: none;
-          padding: 8px 16px;
+          padding: 10px 20px;
           border-radius: 6px;
           cursor: pointer;
-          transition: background 0.2s;
+          font-weight: 600;
+          transition: all 0.2s;
         }
 
         .join-button:hover:not(:disabled) {
-          background: rgba(34, 197, 94, 1);
+          transform: translateY(-1px);
+          box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
         }
 
         .join-button:disabled {
           opacity: 0.5;
           cursor: not-allowed;
+          transform: none;
         }
 
         .refresh-button {
           background: rgba(71, 85, 105, 0.6);
           color: white;
           border: none;
-          padding: 8px 16px;
+          padding: 10px 16px;
           border-radius: 6px;
           cursor: pointer;
           width: 100%;
           transition: background 0.2s;
+          font-weight: 500;
         }
 
         .refresh-button:hover {
