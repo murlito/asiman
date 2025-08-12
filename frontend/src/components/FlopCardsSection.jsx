@@ -189,42 +189,49 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
 
 
   const recognizeCardFromImage = (imageData, ctx) => {
-    console.log('=== SIMPLE CARD RECOGNITION ===');
+    console.log('=== CARD PHOTO CAPTURE ===');
     const data = imageData.data;
     const width = imageData.width;
     const height = imageData.height;
     
-    console.log(`Processing image: ${width}x${height}`);
+    console.log(`Обрабатываю кадр: ${width}x${height}`);
     
-    // Use the ultra-simple analysis
-    const cardInfo = analyzeCardImage(data, width, height);
+    // Анализ изображения
+    const capturedCards = analyzeCardImage(data, width, height);
     
-    if (cardInfo) {
-      console.log('✅ CARD FOUND:', cardInfo.name);
+    if (capturedCards && capturedCards.length > 0) {
+      console.log('📸 КАРТЫ СФОТОГРАФИРОВАНЫ:', capturedCards.length, 'карт(ы)');
       
-      setRecognizedCard(cardInfo);
+      setRecognizedCard(capturedCards);
       
-      // Call the parent callback to update user cards
-      if (onCardScanned) {
-        onCardScanned(cardInfo);
-      }
+      // Отправляем каждую карту родительскому компоненту
+      capturedCards.forEach(card => {
+        if (onCardScanned) {
+          onCardScanned(card);
+        }
+      });
       
-      // Display recognition result
+      // Показываем результат
       const displayElement = document.getElementById('recognized-card');
       if (displayElement) {
-        displayElement.textContent = `${cardInfo.name} - Detected!`;
+        const cardNames = capturedCards.map(card => card.name).join(' + ');
+        displayElement.textContent = `📸 Сфотографировано: ${cardNames}`;
         displayElement.style.display = 'block';
-        displayElement.style.background = 'rgba(0, 150, 0, 0.8)';
+        displayElement.style.background = 'rgba(34, 197, 94, 0.9)';
+        displayElement.style.color = 'white';
+        displayElement.style.fontSize = '14px';
+        displayElement.style.padding = '8px 12px';
+        displayElement.style.borderRadius = '6px';
         
-        // Keep result visible
+        // Скрываем через 3 секунды
         setTimeout(() => {
           displayElement.style.display = 'none';
         }, 3000);
       }
     } else {
-      console.log('❌ No card detected in current frame');
+      console.log('❌ Нет карт для фото');
     }
-    console.log('=== END RECOGNITION ===');
+    console.log('=== КОНЕЦ ФОТО ===');
   };
 
   const analyzeCardImage = (data, width, height) => {
