@@ -449,15 +449,15 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
     // Use rank detection to select the most likely card
     const selectedCard = selectCardByRank(colorMatchingCards, rankInfo);
     
-    // Calculate final confidence with stricter requirements
+    // Calculate final confidence with more lenient requirements
     const finalConfidence = Math.min(0.9, 
       (colorConfidence * 0.4) + 
       (rankInfo.confidence * 0.4) + 
       (backgroundRatio * 0.2)
     );
     
-    // Only return if confidence is high enough
-    if (finalConfidence < 0.6) {
+    // Lower threshold for acceptance
+    if (finalConfidence < 0.4) { // Reduced from 0.6 to 0.4
       console.log('Rejected: low final confidence', finalConfidence);
       return null;
     }
