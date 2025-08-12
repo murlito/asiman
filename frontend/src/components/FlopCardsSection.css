@@ -51,8 +51,8 @@
 .empty-flop-slot {
   width: 100%;
   height: 100%;
-  border: 3px dashed rgba(0, 0, 0, 0.3);
-  border-radius: 12px;
+  border: 2px dashed rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
