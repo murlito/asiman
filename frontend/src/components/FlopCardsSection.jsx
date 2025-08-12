@@ -336,7 +336,7 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
                   <div className="scan-card-slot"></div>
                   <div className="scan-card-slot"></div>
                 </div>
-                <div className="scan-instruction">Место карты в слоты</div>
+                <div className="scan-instruction">Покажите карты OpenCV сканеру</div>
               </div>
               <div id="recognized-card" className="recognized-card-display"></div>
             </div>
