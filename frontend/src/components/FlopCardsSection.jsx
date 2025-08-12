@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import {
   AlertDialog,
@@ -16,6 +16,114 @@ import './FlopCardsSection.css';
 
 export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
   const [isLeaveDialogOpen, setIsLeaveDialogOpen] = useState(false);
+  const [isCameraActive, setIsCameraActive] = useState(false);
+  const [recognizedCard, setRecognizedCard] = useState(null);
+
+  useEffect(() => {
+    // Initialize camera functionality
+    const initCamera = () => {
+      const startCameraBtn = document.getElementById('start-camera');
+      const scanCardBtn = document.getElementById('scan-card');
+      
+      if (startCameraBtn && scanCardBtn) {
+        startCameraBtn.addEventListener('click', startCamera);
+        scanCardBtn.addEventListener('click', scanCard);
+      }
+    };
+
+    // Initialize after component mounts
+    setTimeout(initCamera, 100);
+
+    return () => {
+      // Cleanup camera stream
+      const video = document.getElementById('camera-video');
+      if (video && video.srcObject) {
+        const tracks = video.srcObject.getTracks();
+        tracks.forEach(track => track.stop());
+      }
+    };
+  }, []);
+
+  const startCamera = async () => {
+    try {
+      const video = document.getElementById('camera-video');
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        video: { 
+          width: { ideal: 640 },
+          height: { ideal: 480 },
+          facingMode: 'environment' // Use back camera if available
+        } 
+      });
+      
+      video.srcObject = stream;
+      setIsCameraActive(true);
+      
+      // Update button text
+      const startBtn = document.getElementById('start-camera');
+      if (startBtn) {
+        startBtn.textContent = 'Camera On';
+        startBtn.style.background = '#059669';
+      }
+    } catch (err) {
+      console.error('Error accessing camera:', err);
+      alert('Could not access camera. Please check permissions.');
+    }
+  };
+
+  const scanCard = () => {
+    if (!isCameraActive) {
+      alert('Please start the camera first');
+      return;
+    }
+
+    const video = document.getElementById('camera-video');
+    const canvas = document.getElementById('camera-canvas');
+    const ctx = canvas.getContext('2d');
+    
+    // Set canvas size to match video
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    
+    // Draw current video frame to canvas
+    ctx.drawImage(video, 0, 0);
+    
+    // Convert to base64 for processing
+    const imageData = canvas.toDataURL('image/jpeg', 0.8);
+    
+    // Simulate card recognition (in real app, this would call an AI service)
+    simulateCardRecognition(imageData);
+  };
+
+  const simulateCardRecognition = (imageData) => {
+    // This is a simulation - in real app you'd call an AI service
+    const mockCards = [
+      { rank: 'A', suit: 'spades', name: 'Ace of Spades' },
+      { rank: 'K', suit: 'hearts', name: 'King of Hearts' },
+      { rank: 'Q', suit: 'diamonds', name: 'Queen of Diamonds' },
+      { rank: 'J', suit: 'clubs', name: 'Jack of Clubs' },
+      { rank: '10', suit: 'spades', name: '10 of Spades' },
+      { rank: '9', suit: 'hearts', name: '9 of Hearts' },
+      { rank: '8', suit: 'diamonds', name: '8 of Diamonds' },
+      { rank: '7', suit: 'clubs', name: '7 of Clubs' }
+    ];
+
+    // Random card for simulation
+    const randomCard = mockCards[Math.floor(Math.random() * mockCards.length)];
+    
+    setRecognizedCard(randomCard);
+    
+    // Display recognition result
+    const displayElement = document.getElementById('recognized-card');
+    if (displayElement) {
+      displayElement.textContent = `Detected: ${randomCard.name}`;
+      displayElement.style.display = 'block';
+      
+      // Hide after 3 seconds
+      setTimeout(() => {
+        displayElement.style.display = 'none';
+      }, 3000);
+    }
+  };
 
   const handleConfirmLeave = () => {
     setIsLeaveDialogOpen(false);
