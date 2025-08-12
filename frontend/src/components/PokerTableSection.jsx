@@ -78,7 +78,17 @@ export default function PokerTableSection({ players, dealerPosition, onPlayerAct
         <div className="user-cards-next-to-table">
           <div className="user-hand-cards-table">
             <div className="hand-cards-container">
-              {/* This will be populated from parent component */}
+              {userCards && userCards.map((card, index) => (
+                <PlayingCard 
+                  key={index}
+                  card={card}
+                  faceDown={false}
+                  delay={index * 0.1}
+                />
+              ))}
+            </div>
+            <div className="chips-info-table">
+              <div className="chips-amount-table">${userChips}</div>
             </div>
           </div>
         </div>
