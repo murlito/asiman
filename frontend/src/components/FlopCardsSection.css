@@ -135,24 +135,27 @@
 
 .camera-controls {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   z-index: 105;
   position: relative;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .camera-btn {
   background: #1a1a1a;
   color: #fbbf24;
   border: none;
-  padding: 8px 14px;
+  padding: 6px 10px;
   border-radius: 6px;
-  font-size: 11px;
+  font-size: 9px;
   font-weight: bold;
   cursor: pointer;
   transition: all 0.2s ease;
   z-index: 106;
   position: relative;
   pointer-events: auto;
+  white-space: nowrap;
 }
 
 .camera-btn:hover {
