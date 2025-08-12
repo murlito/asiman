@@ -25,12 +25,12 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
       startCamera();
     }, 1000);
 
-    // Фото каждые 2 секунды когда камера активна
-    const scanInterval = setInterval(() => {
+    // Фото каждые 3 секунды когда камера активна (OpenCV обработка может занять время)
+    const scanInterval = setInterval(async () => {
       if (isCameraActive) {
-        scanCard();
+        await scanCard();
       }
-    }, 2000);
+    }, 3000);
 
     return () => {
       clearInterval(scanInterval);
