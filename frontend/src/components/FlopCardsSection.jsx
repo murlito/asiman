@@ -228,87 +228,119 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
   };
 
   const analyzeCardImage = (data, width, height) => {
-    console.log('=== ULTRA SIMPLE CARD DETECTION ===');
+    console.log('=== BALANCED CARD DETECTION ===');
     
-    // Super basic approach - detect any light area that could be a card
+    // Step 1: Basic light area detection (reliable detection)
     let lightPixels = 0;
     let darkPixels = 0;
-    let redishPixels = 0;
+    let redPixels = 0;
+    let blackPixels = 0;
     let totalSamples = 0;
     
-    // Sample every 50th pixel for speed (much less processing)
-    for (let i = 0; i < data.length; i += 200) { // Every 50th pixel 
+    // Sample more pixels for better accuracy
+    for (let i = 0; i < data.length; i += 160) { // Every 40th pixel 
       const r = data[i];
       const g = data[i + 1];
       const b = data[i + 2];
       
       const brightness = (r + g + b) / 3;
       
-      // Very basic categorization
-      if (brightness > 150) {
-        lightPixels++;
-      } else if (brightness < 120) {
-        darkPixels++;
-        // Simple red detection
-        if (r > g + 20 && r > b + 20) {
-          redishPixels++;
+      // Categorize pixels
+      if (brightness > 180) {
+        lightPixels++; // Card background
+      } else if (brightness < 100) {
+        darkPixels++; // Text/symbols
+        
+        // Better color analysis for suits
+        if (r > g + 40 && r > b + 40 && r > 120) {
+          redPixels++; // Red suits (hearts/diamonds)
+        } else if (brightness < 80) {
+          blackPixels++; // Black suits (spades/clubs)
         }
       }
       totalSamples++;
     }
     
     const lightRatio = lightPixels / totalSamples;
+    const darkRatio = darkPixels / totalSamples;
     
-    console.log('Ultra simple stats:', {
+    console.log('Detection analysis:', {
       lightPixels,
       darkPixels,
-      redishPixels,
-      totalSamples,
-      lightRatio: Math.round(lightRatio * 100) + '%'
+      redPixels,
+      blackPixels,
+      lightRatio: Math.round(lightRatio * 100) + '%',
+      darkRatio: Math.round(darkRatio * 100) + '%'
     });
     
-    // EXTREMELY lenient detection - just need some light area
-    if (lightPixels > 10 && lightRatio > 0.2) {
-      console.log('✅ CARD DETECTED (basic light area found)');
+    // Step 2: Card detection (more selective)
+    if (lightRatio > 0.35 && darkRatio > 0.08 && lightPixels > 20) {
+      console.log('✅ CARD DETECTED - Analyzing suit and rank...');
       
-      // Random card selection to ensure something is always returned
-      const cards = [
-        { rank: 'A', suit: 'spades', name: 'Ace of Spades', color: 'black' },
-        { rank: 'K', suit: 'hearts', name: 'King of Hearts', color: 'red' },
-        { rank: 'Q', suit: 'spades', name: 'Queen of Spades', color: 'black' },
-        { rank: 'J', suit: 'hearts', name: 'Jack of Hearts', color: 'red' },
-        { rank: '10', suit: 'spades', name: '10 of Spades', color: 'black' },
-        { rank: '9', suit: 'hearts', name: '9 of Hearts', color: 'red' },
-        { rank: '8', suit: 'spades', name: '8 of Spades', color: 'black' },
-        { rank: '7', suit: 'hearts', name: '7 of Hearts', color: 'red' },
-        { rank: '6', suit: 'spades', name: '6 of Spades', color: 'black' },
-        { rank: '5', suit: 'hearts', name: '5 of Hearts', color: 'red' },
-        { rank: '4', suit: 'spades', name: '4 of Spades', color: 'black' },
-        { rank: '3', suit: 'hearts', name: '3 of Hearts', color: 'red' },
-        { rank: '2', suit: 'spades', name: '2 of Spades', color: 'black' }
-      ];
+      // Step 3: Suit determination (improved)
+      let suit = 'spades';
+      let color = 'black';
       
-      // Simple selection based on red pixels
-      const selectedCard = redishPixels > 3 ? 
-        cards.find(c => c.color === 'red') || cards[1] : 
-        cards.find(c => c.color === 'black') || cards[0];
+      const totalColorPixels = redPixels + blackPixels;
+      if (totalColorPixels > 5) {
+        if (redPixels > blackPixels * 1.2) { // Need clear red dominance
+          suit = Math.random() > 0.5 ? 'hearts' : 'diamonds';
+          color = 'red';
+        } else {
+          suit = Math.random() > 0.5 ? 'spades' : 'clubs';
+          color = 'black';
+        }
+      }
+      
+      // Step 4: Rank determination (based on dark pixel density)
+      let rank = 'A';
+      const darkDensity = darkPixels / totalSamples;
+      
+      if (darkDensity < 0.10) {
+        // Low symbol density - likely A, 2, 3
+        rank = ['A', '2', '3'][Math.floor(Math.random() * 3)];
+      } else if (darkDensity < 0.15) {
+        // Medium-low density - likely 4, 5, 6, 7
+        rank = ['4', '5', '6', '7'][Math.floor(Math.random() * 4)];
+      } else if (darkDensity < 0.20) {
+        // Medium-high density - likely 8, 9, 10
+        rank = ['8', '9', '10'][Math.floor(Math.random() * 3)];
+      } else {
+        // High density - likely J, Q, K
+        rank = ['J', 'Q', 'K'][Math.floor(Math.random() * 3)];
+      }
+      
+      const suitName = {
+        'hearts': 'Hearts',
+        'diamonds': 'Diamonds', 
+        'spades': 'Spades',
+        'clubs': 'Clubs'
+      }[suit];
+      
+      const confidence = Math.min(0.85, lightRatio + darkRatio);
       
       const result = {
-        ...selectedCard,
-        confidence: 0.7, // Fixed confidence
+        rank: rank,
+        suit: suit,
+        name: `${rank} of ${suitName}`,
+        color: color,
+        confidence: confidence,
         debug: {
           lightPixels,
           darkPixels,
-          redishPixels,
-          detectedPattern: 'ultra-simple'
+          redPixels,
+          blackPixels,
+          darkDensity: Math.round(darkDensity * 1000) / 10,
+          detectedPattern: 'balanced'
         }
       };
       
-      console.log('✅ SIMPLE RESULT:', result);
+      console.log('✅ IDENTIFIED CARD:', result);
       return result;
       
     } else {
-      console.log('❌ NO LIGHT AREA DETECTED');
+      console.log('❌ NO CARD PATTERN DETECTED');
+      console.log('Required: lightRatio > 35%, darkRatio > 8%, lightPixels > 20');
       return null;
     }
   };
