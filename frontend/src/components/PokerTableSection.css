@@ -11,21 +11,9 @@
 .table-and-cards-container {
   display: flex;
   align-items: center;
-  gap: 40px;
+  gap: 0;
   flex: 1;
   position: relative;
-}
-
-.table-and-cards-container::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: 10%;
-  width: 2px;
-  height: 80%;
-  background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transform: translateX(-50%);
-  z-index: 1;
 }
 
 .table-area-new {
@@ -33,6 +21,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex: 1;
+  background: linear-gradient(135deg, #2d5016, #1a2f0a);
+  padding: 20px;
 }
 
 .table-surface-new {
