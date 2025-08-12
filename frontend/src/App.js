@@ -114,6 +114,10 @@ function App() {
               )
             } 
           />
+          <Route 
+            path="/dealer" 
+            element={<DealerDashboard />} 
+          />
         </Routes>
       </Router>
       <Toaster />
