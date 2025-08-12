@@ -226,6 +226,15 @@ async def scanner_health():
     
     return status
 
+@api_router.get("/health-check")
+async def api_health_check():
+    """Simple health check for frontend connectivity"""
+    return {
+        "status": "ok",
+        "message": "Backend API is working",
+        "timestamp": datetime.utcnow().isoformat()
+    }
+
 # Include the router in the main app
 app.include_router(api_router)
 
