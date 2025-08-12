@@ -342,6 +342,7 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
               <button id="start-camera" className="camera-btn">Start Camera</button>
               <button id="scan-card" className="camera-btn">Scan Card</button>
             </div>
+            <div id="camera-status" className="camera-status">Camera: Off</div>
           </div>
         </div>
       </div>
