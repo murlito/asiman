@@ -68,6 +68,16 @@ export default function PokerGame() {
     }
   };
 
+  const handleLeaveGame = () => {
+    console.log('Player left the game');
+    // Here you would typically:
+    // 1. Send leave request to backend
+    // 2. Clean up game state
+    // 3. Redirect to lobby or home page
+    alert('You have left the game. Redirecting to lobby...');
+    // In real app: navigate('/lobby') or similar
+  };
+
   return (
     <div className="poker-game-new">
       {/* Top Section - Flop Cards */}
@@ -75,6 +85,7 @@ export default function PokerGame() {
         <FlopCardsSection 
           cards={communityCards}
           gameInfo={gameInfo}
+          onLeave={handleLeaveGame}
         />
       </div>
 
