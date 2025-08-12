@@ -58,8 +58,6 @@ export default function PokerTableSection({ players, dealerPosition, onPlayerAct
 
   return (
     <div className="poker-table-section-container">
-      <div className="table-title">POKER TABLE</div>
-      
       <div className="table-area-new">
         <div className="table-surface-new">
           <div className="table-felt-new">
