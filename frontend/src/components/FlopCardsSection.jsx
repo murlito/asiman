@@ -14,7 +14,7 @@ import {
 import PlayingCard from './PlayingCard';
 import './FlopCardsSection.css';
 
-export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
+export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScanned }) {
   const [isLeaveDialogOpen, setIsLeaveDialogOpen] = useState(false);
   const [isCameraActive, setIsCameraActive] = useState(false);
   const [recognizedCard, setRecognizedCard] = useState(null);
