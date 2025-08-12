@@ -11,7 +11,7 @@
 
 /* Top Section - Flop Cards (Yellow background) */
 .flop-section {
-  height: 30vh;
+  height: 25vh;
   background: linear-gradient(135deg, #fbbf24, #f59e0b);
   display: flex;
   flex-direction: column;
@@ -19,7 +19,7 @@
 
 /* Bottom Section - Full Width Table */
 .bottom-sections {
-  height: 70vh;
+  height: 75vh;
   display: flex;
 }
 
