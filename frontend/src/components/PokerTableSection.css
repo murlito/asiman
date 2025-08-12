@@ -218,6 +218,14 @@
   cursor: pointer;
 }
 
+.user-card-hover-container .playing-card {
+  transition: transform 0.3s ease;
+}
+
+.user-card-hover-container:hover .playing-card {
+  transform: translateY(-10px) scale(1.05);
+}
+
 .user-card-hover-container:hover .playing-card.face-down .card-front {
   transform: rotateY(0deg);
 }
