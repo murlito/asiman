@@ -68,6 +68,41 @@ export default function PokerGame({ playerName, onLeaveGame }) {
     }
   };
 
+  // Function to update user cards when scanner recognizes a card
+  const handleScannedCard = (scannedCard) => {
+    console.log('Scanner recognized card:', scannedCard);
+    
+    // Convert scanned card to our card format
+    const newCard = {
+      rank: scannedCard.rank,
+      suit: scannedCard.suit
+    };
+
+    // Add to user cards (maximum 2 cards for poker)
+    setCurrentPlayerHand(prevCards => {
+      const updatedCards = [...prevCards];
+      
+      if (updatedCards.length < 2) {
+        // Add new card if less than 2 cards
+        updatedCards.push(newCard);
+      } else {
+        // Replace oldest card (shift left)
+        updatedCards[0] = updatedCards[1];
+        updatedCards[1] = newCard;
+      }
+      
+      console.log('Updated user cards:', updatedCards);
+      return updatedCards;
+    });
+
+    // Show toast notification
+    toast({
+      title: "Card Scanned!",
+      description: `${scannedCard.name} added to your hand`,
+      duration: 3000,
+    });
+  };
+
   const handleLeaveGame = () => {
     console.log('Player left the game');
     // Here you would typically:
