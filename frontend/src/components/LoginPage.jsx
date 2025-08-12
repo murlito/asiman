@@ -17,12 +17,23 @@ const LoginPage = ({ onLogin }) => {
   const loadGames = async () => {
     try {
       const backendUrl = import.meta.env.VITE_REACT_APP_BACKEND_URL || process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
+      console.log('Loading games from:', backendUrl);
+      
+      // Test connection first
+      const healthResponse = await fetch(`${backendUrl}/api/health-check`);
+      console.log('Health check response:', healthResponse.status);
+      
       const response = await fetch(`${backendUrl}/api/poker/games`);
+      console.log('Games response status:', response.status);
+      
       const data = await response.json();
+      console.log('Games data received:', data);
+      
       setGames(data.games || []);
-      console.log('Loaded games:', data.games);
+      console.log('Games state updated:', data.games);
     } catch (err) {
       console.error('Failed to load games:', err);
+      setError(`Failed to connect to server: ${err.message}`);
     }
   };
 
