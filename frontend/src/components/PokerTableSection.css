@@ -17,15 +17,21 @@
   height: 100%;
 }
 
+.table-area-with-buttons {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background: linear-gradient(135deg, #2d5016, #1a2f0a);
+  height: 100%;
+}
+
 .table-area-new {
   perspective: 1200px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex: 1;
-  background: linear-gradient(135deg, #2d5016, #1a2f0a);
   padding: 20px;
-  height: 100%;
 }
 
 .table-surface-new {
