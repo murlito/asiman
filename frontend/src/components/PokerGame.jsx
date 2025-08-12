@@ -149,6 +149,7 @@ export default function PokerGame({ playerName, onLeaveGame }) {
             gameInfo={gameInfo}
             userCards={currentPlayerHand}
             userChips={currentPlayerChips}
+            newCardIndex={newCardIndex}
           />
         </div>
       </div>
