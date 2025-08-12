@@ -7,7 +7,7 @@ import UserCardsSection from './UserCardsSection';
 import FlopCardsSection from './FlopCardsSection';
 import './PokerGameNew.css';
 
-export default function PokerGame() {
+export default function PokerGame({ playerName, onLeaveGame }) {
   const [players, setPlayers] = useState(mockData.players);
   const [currentPlayerHand, setCurrentPlayerHand] = useState(mockData.currentPlayerHand);
   const [communityCards, setCommunityCards] = useState([]);
