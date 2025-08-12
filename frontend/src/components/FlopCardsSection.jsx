@@ -169,7 +169,6 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
         {/* Camera section on the right side of header */}
         <div className="camera-section">
           <div className="camera-container">
-            <div className="camera-title">Card Scanner</div>
             <div className="camera-screen">
               <video id="camera-video" autoPlay playsInline muted></video>
               <canvas id="camera-canvas" style={{ display: 'none' }}></canvas>
