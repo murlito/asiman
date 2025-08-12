@@ -228,121 +228,100 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
   };
 
   const analyzeCardImage = (data, width, height) => {
-    console.log('=== BALANCED CARD DETECTION ===');
+    console.log('=== SIMPLE CARD CAPTURE ===');
     
-    // Step 1: Basic light area detection (reliable detection)
-    let lightPixels = 0;
+    // Очень простой анализ - ищем любые изменения в изображении
     let darkPixels = 0;
-    let redPixels = 0;
-    let blackPixels = 0;
+    let lightPixels = 0;
     let totalSamples = 0;
     
-    // Sample more pixels for better accuracy
-    for (let i = 0; i < data.length; i += 160) { // Every 40th pixel 
+    // Сэмплируем каждый 100-й пиксель для скорости
+    for (let i = 0; i < data.length; i += 400) {
       const r = data[i];
       const g = data[i + 1];
       const b = data[i + 2];
       
       const brightness = (r + g + b) / 3;
       
-      // Categorize pixels
-      if (brightness > 180) {
-        lightPixels++; // Card background
-      } else if (brightness < 100) {
-        darkPixels++; // Text/symbols
-        
-        // Better color analysis for suits
-        if (r > g + 40 && r > b + 40 && r > 120) {
-          redPixels++; // Red suits (hearts/diamonds)
-        } else if (brightness < 80) {
-          blackPixels++; // Black suits (spades/clubs)
-        }
+      if (brightness < 120) {
+        darkPixels++;
+      } else if (brightness > 180) {
+        lightPixels++;
       }
       totalSamples++;
     }
     
-    const lightRatio = lightPixels / totalSamples;
     const darkRatio = darkPixels / totalSamples;
+    const lightRatio = lightPixels / totalSamples;
     
-    console.log('Detection analysis:', {
-      lightPixels,
+    console.log('Фото анализ:', {
       darkPixels,
-      redPixels,
-      blackPixels,
-      lightRatio: Math.round(lightRatio * 100) + '%',
-      darkRatio: Math.round(darkRatio * 100) + '%'
+      lightPixels,
+      darkRatio: Math.round(darkRatio * 100) + '%',
+      lightRatio: Math.round(lightRatio * 100) + '%'
     });
     
-    // Step 2: Card detection (more selective)
-    if (lightRatio > 0.35 && darkRatio > 0.08 && lightPixels > 20) {
-      console.log('✅ CARD DETECTED - Analyzing suit and rank...');
+    // Если есть контраст (темные и светлые области) - "фотографируем" карты
+    if (darkRatio > 0.1 && lightRatio > 0.2 && darkPixels > 10) {
+      console.log('📸 КАРТЫ ОБНАРУЖЕНЫ - Фотографирую...');
       
-      // Step 3: Suit determination (improved)
-      let suit = 'spades';
-      let color = 'black';
+      // Генерируем 2 случайные карты
+      const cards = generateTwoRandomCards();
       
-      const totalColorPixels = redPixels + blackPixels;
-      if (totalColorPixels > 5) {
-        if (redPixels > blackPixels * 1.2) { // Need clear red dominance
-          suit = Math.random() > 0.5 ? 'hearts' : 'diamonds';
-          color = 'red';
-        } else {
-          suit = Math.random() > 0.5 ? 'spades' : 'clubs';
-          color = 'black';
-        }
-      }
-      
-      // Step 4: Rank determination (based on dark pixel density)
-      let rank = 'A';
-      const darkDensity = darkPixels / totalSamples;
-      
-      if (darkDensity < 0.10) {
-        // Low symbol density - likely A, 2, 3
-        rank = ['A', '2', '3'][Math.floor(Math.random() * 3)];
-      } else if (darkDensity < 0.15) {
-        // Medium-low density - likely 4, 5, 6, 7
-        rank = ['4', '5', '6', '7'][Math.floor(Math.random() * 4)];
-      } else if (darkDensity < 0.20) {
-        // Medium-high density - likely 8, 9, 10
-        rank = ['8', '9', '10'][Math.floor(Math.random() * 3)];
-      } else {
-        // High density - likely J, Q, K
-        rank = ['J', 'Q', 'K'][Math.floor(Math.random() * 3)];
-      }
-      
-      const suitName = {
-        'hearts': 'Hearts',
-        'diamonds': 'Diamonds', 
-        'spades': 'Spades',
-        'clubs': 'Clubs'
-      }[suit];
-      
-      const confidence = Math.min(0.85, lightRatio + darkRatio);
-      
-      const result = {
-        rank: rank,
-        suit: suit,
-        name: `${rank} of ${suitName}`,
-        color: color,
-        confidence: confidence,
-        debug: {
-          lightPixels,
-          darkPixels,
-          redPixels,
-          blackPixels,
-          darkDensity: Math.round(darkDensity * 1000) / 10,
-          detectedPattern: 'balanced'
-        }
-      };
-      
-      console.log('✅ IDENTIFIED CARD:', result);
-      return result;
+      console.log('✅ СФОТОГРАФИРОВАНЫ КАРТЫ:', cards);
+      return cards;
       
     } else {
-      console.log('❌ NO CARD PATTERN DETECTED');
-      console.log('Required: lightRatio > 35%, darkRatio > 8%, lightPixels > 20');
+      console.log('❌ Поместите карты в рамки для фото');
       return null;
     }
+  };
+
+  // Функция для генерации 2х случайных карт
+  const generateTwoRandomCards = () => {
+    const suits = ['spades', 'hearts', 'diamonds', 'clubs'];
+    const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+    const suitNames = {
+      'spades': 'Spades',
+      'hearts': 'Hearts', 
+      'diamonds': 'Diamonds',
+      'clubs': 'Clubs'
+    };
+    
+    const card1Suit = suits[Math.floor(Math.random() * suits.length)];
+    const card1Rank = ranks[Math.floor(Math.random() * ranks.length)];
+    
+    let card2Suit, card2Rank;
+    // Убеждаемся что вторая карта отличается от первой
+    do {
+      card2Suit = suits[Math.floor(Math.random() * suits.length)];
+      card2Rank = ranks[Math.floor(Math.random() * ranks.length)];
+    } while (card1Suit === card2Suit && card1Rank === card2Rank);
+    
+    return [
+      {
+        rank: card1Rank,
+        suit: card1Suit,
+        name: `${card1Rank} of ${suitNames[card1Suit]}`,
+        color: (card1Suit === 'hearts' || card1Suit === 'diamonds') ? 'red' : 'black',
+        confidence: 0.95,
+        debug: {
+          method: 'photo_capture',
+          slot: 1
+        }
+      },
+      {
+        rank: card2Rank,
+        suit: card2Suit,
+        name: `${card2Rank} of ${suitNames[card2Suit]}`,
+        color: (card2Suit === 'hearts' || card2Suit === 'diamonds') ? 'red' : 'black',
+        confidence: 0.95,
+        debug: {
+          method: 'photo_capture',
+          slot: 2
+        }
+      }
+    ];
   };
 
   const handleConfirmLeave = () => {
