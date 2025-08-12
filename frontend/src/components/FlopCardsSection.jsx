@@ -189,20 +189,18 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
 
 
   const recognizeCardFromImage = (imageData, ctx) => {
-    console.log('=== CARD RECOGNITION ANALYSIS ===');
+    console.log('=== SIMPLE CARD RECOGNITION ===');
     const data = imageData.data;
     const width = imageData.width;
     const height = imageData.height;
     
-    console.log(`Processing image: ${width}x${height}, ${data.length} bytes`);
+    console.log(`Processing image: ${width}x${height}`);
     
-    // Enhanced card recognition algorithm
+    // Use the ultra-simple analysis
     const cardInfo = analyzeCardImage(data, width, height);
     
     if (cardInfo) {
-      console.log('✅ CARD RECOGNIZED:', cardInfo.name);
-      console.log('Debug details:', cardInfo.debug);
-      console.log('Final confidence:', Math.round(cardInfo.confidence * 100) + '%');
+      console.log('✅ CARD FOUND:', cardInfo.name);
       
       setRecognizedCard(cardInfo);
       
@@ -211,25 +209,22 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
         onCardScanned(cardInfo);
       }
       
-      // Display recognition result with debug info
+      // Display recognition result
       const displayElement = document.getElementById('recognized-card');
       if (displayElement) {
-        const debugInfo = cardInfo.debug ? 
-          ` (BG:${cardInfo.debug.backgroundRatio}% CC:${cardInfo.debug.colorConfidence}%)` : '';
-        
-        displayElement.textContent = `${cardInfo.name} ${Math.round(cardInfo.confidence * 100)}%${debugInfo}`;
+        displayElement.textContent = `${cardInfo.name} - Detected!`;
         displayElement.style.display = 'block';
-        displayElement.style.background = cardInfo.confidence > 0.7 ? 'rgba(0, 150, 0, 0.8)' : 'rgba(150, 150, 0, 0.8)';
+        displayElement.style.background = 'rgba(0, 150, 0, 0.8)';
         
-        // Keep result visible longer
+        // Keep result visible
         setTimeout(() => {
           displayElement.style.display = 'none';
-        }, 4000);
+        }, 3000);
       }
     } else {
-      console.log('❌ NO VALID CARD DETECTED - Too many rejections or low confidence');
+      console.log('❌ No card detected in current frame');
     }
-    console.log('=== END ANALYSIS ===');
+    console.log('=== END RECOGNITION ===');
   };
 
   const analyzeCardImage = (data, width, height) => {
