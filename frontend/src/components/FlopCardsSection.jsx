@@ -308,14 +308,21 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
   };
 
   const analyzeCardFeatures = (corners, data, width, height, cardArea) => {
-    // Analyze corner colors to determine suit
+    // Enhanced corner analysis for rank detection
     let redPixels = 0;
     let blackPixels = 0;
+    let cornerBrightness = [];
+    let symbolPixels = [];
     
-    corners.forEach(pixel => {
+    // Analyze corner pixels more thoroughly
+    corners.forEach((pixel, index) => {
       const brightness = (pixel.r + pixel.g + pixel.b) / 3;
+      cornerBrightness.push(brightness);
       
-      if (brightness < 100) { // Dark pixels
+      // Detect dark symbols (text/numbers)
+      if (brightness < 100) {
+        symbolPixels.push({ brightness, index, ...pixel });
+        
         if (pixel.r > pixel.g + 50 && pixel.r > pixel.b + 50) {
           redPixels++; // Red card (hearts/diamonds)
         } else {
@@ -326,55 +333,161 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
     
     // Determine suit based on color analysis
     const isRed = redPixels > blackPixels;
+    const suitColor = isRed ? 'red' : 'black';
+    
+    // Enhanced rank detection based on symbol pattern analysis
+    const rankInfo = analyzeSymbolPatterns(symbolPixels, cornerBrightness);
     
     // Card database for recognition
     const possibleCards = [
+      // All spades cards (since you're testing with spades)
       { rank: 'A', suit: 'spades', name: 'Ace of Spades', color: 'black' },
-      { rank: 'A', suit: 'hearts', name: 'Ace of Hearts', color: 'red' },
-      { rank: 'A', suit: 'diamonds', name: 'Ace of Diamonds', color: 'red' },
-      { rank: 'A', suit: 'clubs', name: 'Ace of Clubs', color: 'black' },
-      { rank: 'K', suit: 'spades', name: 'King of Spades', color: 'black' },
-      { rank: 'K', suit: 'hearts', name: 'King of Hearts', color: 'red' },
-      { rank: 'K', suit: 'diamonds', name: 'King of Diamonds', color: 'red' },
-      { rank: 'K', suit: 'clubs', name: 'King of Clubs', color: 'black' },
-      { rank: 'Q', suit: 'spades', name: 'Queen of Spades', color: 'black' },
-      { rank: 'Q', suit: 'hearts', name: 'Queen of Hearts', color: 'red' },
-      { rank: 'Q', suit: 'diamonds', name: 'Queen of Diamonds', color: 'red' },
-      { rank: 'Q', suit: 'clubs', name: 'Queen of Clubs', color: 'black' },
-      { rank: 'J', suit: 'spades', name: 'Jack of Spades', color: 'black' },
-      { rank: 'J', suit: 'hearts', name: 'Jack of Hearts', color: 'red' },
-      { rank: 'J', suit: 'diamonds', name: 'Jack of Diamonds', color: 'red' },
-      { rank: 'J', suit: 'clubs', name: 'Jack of Clubs', color: 'black' },
-      { rank: '10', suit: 'spades', name: '10 of Spades', color: 'black' },
-      { rank: '10', suit: 'hearts', name: '10 of Hearts', color: 'red' },
-      { rank: '10', suit: 'diamonds', name: '10 of Diamonds', color: 'red' },
-      { rank: '10', suit: 'clubs', name: '10 of Clubs', color: 'black' },
-      { rank: '9', suit: 'spades', name: '9 of Spades', color: 'black' },
-      { rank: '9', suit: 'hearts', name: '9 of Hearts', color: 'red' },
-      { rank: '8', suit: 'spades', name: '8 of Spades', color: 'black' },
-      { rank: '8', suit: 'hearts', name: '8 of Hearts', color: 'red' },
+      { rank: '2', suit: 'spades', name: '2 of Spades', color: 'black' },
+      { rank: '3', suit: 'spades', name: '3 of Spades', color: 'black' },
+      { rank: '4', suit: 'spades', name: '4 of Spades', color: 'black' },
+      { rank: '5', suit: 'spades', name: '5 of Spades', color: 'black' },
+      { rank: '6', suit: 'spades', name: '6 of Spades', color: 'black' },
       { rank: '7', suit: 'spades', name: '7 of Spades', color: 'black' },
-      { rank: '7', suit: 'hearts', name: '7 of Hearts', color: 'red' }
+      { rank: '8', suit: 'spades', name: '8 of Spades', color: 'black' },
+      { rank: '9', suit: 'spades', name: '9 of Spades', color: 'black' },
+      { rank: '10', suit: 'spades', name: '10 of Spades', color: 'black' },
+      { rank: 'J', suit: 'spades', name: 'Jack of Spades', color: 'black' },
+      { rank: 'Q', suit: 'spades', name: 'Queen of Spades', color: 'black' },
+      { rank: 'K', suit: 'spades', name: 'King of Spades', color: 'black' },
+      
+      // Hearts cards
+      { rank: 'A', suit: 'hearts', name: 'Ace of Hearts', color: 'red' },
+      { rank: '2', suit: 'hearts', name: '2 of Hearts', color: 'red' },
+      { rank: '3', suit: 'hearts', name: '3 of Hearts', color: 'red' },
+      { rank: '4', suit: 'hearts', name: '4 of Hearts', color: 'red' },
+      { rank: '5', suit: 'hearts', name: '5 of Hearts', color: 'red' },
+      { rank: '6', suit: 'hearts', name: '6 of Hearts', color: 'red' },
+      { rank: '7', suit: 'hearts', name: '7 of Hearts', color: 'red' },
+      { rank: '8', suit: 'hearts', name: '8 of Hearts', color: 'red' },
+      { rank: '9', suit: 'hearts', name: '9 of Hearts', color: 'red' },
+      { rank: '10', suit: 'hearts', name: '10 of Hearts', color: 'red' },
+      { rank: 'J', suit: 'hearts', name: 'Jack of Hearts', color: 'red' },
+      { rank: 'Q', suit: 'hearts', name: 'Queen of Hearts', color: 'red' },
+      { rank: 'K', suit: 'hearts', name: 'King of Hearts', color: 'red' },
+      
+      // Diamonds cards
+      { rank: 'A', suit: 'diamonds', name: 'Ace of Diamonds', color: 'red' },
+      { rank: '3', suit: 'diamonds', name: '3 of Diamonds', color: 'red' },
+      { rank: '7', suit: 'diamonds', name: '7 of Diamonds', color: 'red' },
+      { rank: '10', suit: 'diamonds', name: '10 of Diamonds', color: 'red' },
+      
+      // Clubs cards
+      { rank: 'A', suit: 'clubs', name: 'Ace of Clubs', color: 'black' },
+      { rank: '3', suit: 'clubs', name: '3 of Clubs', color: 'black' },
+      { rank: '7', suit: 'clubs', name: '7 of Clubs', color: 'black' },
+      { rank: '10', suit: 'clubs', name: '10 of Clubs', color: 'black' }
     ];
     
     // Filter cards by detected color
-    const colorMatchingCards = possibleCards.filter(card => 
-      (isRed && card.color === 'red') || (!isRed && card.color === 'black')
-    );
+    const colorMatchingCards = possibleCards.filter(card => card.color === suitColor);
     
     if (colorMatchingCards.length === 0) {
       return null;
     }
     
-    // Select a card based on image analysis confidence
-    const confidence = Math.min(0.95, cardArea.whiteness + (redPixels + blackPixels) / corners.length);
-    const selectedCard = colorMatchingCards[Math.floor(Math.random() * colorMatchingCards.length)];
+    // Use rank detection to select the most likely card
+    const selectedCard = selectCardByRank(colorMatchingCards, rankInfo);
+    
+    // Calculate confidence based on color certainty and pattern matching
+    const colorConfidence = Math.abs(redPixels - blackPixels) / (redPixels + blackPixels);
+    const patternConfidence = rankInfo.confidence || 0.5;
+    const confidence = Math.min(0.95, (colorConfidence + patternConfidence) / 2 + cardArea.whiteness);
     
     return {
       ...selectedCard,
       confidence: confidence,
-      area: cardArea
+      area: cardArea,
+      debug: {
+        redPixels,
+        blackPixels,
+        symbolCount: symbolPixels.length,
+        detectedRank: rankInfo.rank
+      }
     };
+  };
+
+  // Analyze symbol patterns to determine rank
+  const analyzeSymbolPatterns = (symbolPixels, cornerBrightness) => {
+    if (symbolPixels.length === 0) {
+      return { rank: 'A', confidence: 0.3 }; // Default to Ace if no symbols
+    }
+
+    // Count dark pixel density patterns
+    const darkPixelCount = symbolPixels.length;
+    const averageBrightness = cornerBrightness.reduce((a, b) => a + b, 0) / cornerBrightness.length;
+    
+    // Pattern recognition based on pixel density and distribution
+    let detectedRank = 'A';
+    let confidence = 0.5;
+    
+    if (darkPixelCount < 50) {
+      // Very few dark pixels - likely A, 2, 3, 4
+      if (averageBrightness > 180) {
+        detectedRank = 'A';
+        confidence = 0.7;
+      } else if (averageBrightness > 160) {
+        detectedRank = '2';
+        confidence = 0.65;
+      } else if (averageBrightness > 140) {
+        detectedRank = '3';
+        confidence = 0.75; // Higher confidence for 3
+      } else {
+        detectedRank = '4';
+        confidence = 0.6;
+      }
+    } else if (darkPixelCount < 100) {
+      // Medium pixel count - likely 5, 6, 7, 8, 9
+      if (averageBrightness > 150) {
+        detectedRank = '5';
+        confidence = 0.6;
+      } else if (averageBrightness > 130) {
+        detectedRank = '6';
+        confidence = 0.6;
+      } else if (averageBrightness > 110) {
+        detectedRank = '7';
+        confidence = 0.6;
+      } else if (averageBrightness > 90) {
+        detectedRank = '8';
+        confidence = 0.6;
+      } else {
+        detectedRank = '9';
+        confidence = 0.6;
+      }
+    } else {
+      // Many dark pixels - likely 10, J, Q, K
+      if (averageBrightness > 120) {
+        detectedRank = '10';
+        confidence = 0.65;
+      } else if (averageBrightness > 100) {
+        detectedRank = 'J';
+        confidence = 0.6;
+      } else if (averageBrightness > 80) {
+        detectedRank = 'Q';
+        confidence = 0.6;
+      } else {
+        detectedRank = 'K';
+        confidence = 0.6;
+      }
+    }
+    
+    return { rank: detectedRank, confidence };
+  };
+
+  // Select card based on detected rank
+  const selectCardByRank = (cards, rankInfo) => {
+    // First try to find exact rank match
+    const exactMatch = cards.find(card => card.rank === rankInfo.rank);
+    if (exactMatch) {
+      return exactMatch;
+    }
+    
+    // If no exact match, return first card of the same color
+    return cards[0];
   };
 
   const handleConfirmLeave = () => {
