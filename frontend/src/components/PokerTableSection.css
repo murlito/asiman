@@ -257,12 +257,19 @@
 }
 
 .hand-cards-container .playing-card {
-  transition: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .hand-cards-container .card-front,
 .hand-cards-container .card-back {
-  transition: none;
+  transition: transform 0.3s ease;
+}
+
+/* Ensure user cards don't move up on hover - only flip and add shadow */
+.hand-cards-container .playing-card:hover {
+  transform: none !important;
+  z-index: 10;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
 /* Reduced card size to prevent overlap with chips info */
