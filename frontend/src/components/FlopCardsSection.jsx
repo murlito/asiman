@@ -185,12 +185,19 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
     console.log('Scan card clicked');
     
     const statusElement = document.getElementById('camera-status');
-    const isDemo = statusElement && statusElement.textContent.includes('Demo');
-    const isActive = statusElement && statusElement.textContent.includes('Active');
+    const currentStatus = statusElement ? statusElement.textContent : '';
+    
+    // Check different status states
+    const isDemo = currentStatus.includes('Demo Mode');
+    const isActive = currentStatus.includes('Active');
+    const isOff = currentStatus.includes('Off');
+    const isError = currentStatus.includes('Error');
+    
+    console.log('Camera status:', currentStatus, { isDemo, isActive, isOff, isError });
     
     // Only allow scanning if camera is active OR in demo mode
-    if (!isDemo && !isActive) {
-      console.log('Camera not active and not in demo mode');
+    if ((isOff || isError) && !isDemo) {
+      console.log('Camera not ready and not in demo mode');
       alert('Please start the camera first or enable Demo Mode to scan cards');
       return;
     }
@@ -218,9 +225,10 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
       return;
     }
     
-    if (video.videoWidth === 0 || video.videoHeight === 0) {
-      console.log('Video not ready yet');
-      alert('Camera is starting up, please wait a moment and try again');
+    // Check if video has actual content
+    if (!video.srcObject || video.videoWidth === 0 || video.videoHeight === 0) {
+      console.log('Video not ready yet - no stream or dimensions');
+      alert('Camera is starting up or not connected. Please wait or use Demo Mode.');
       return;
     }
 
@@ -237,8 +245,15 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
     
     // Show scanning feedback
     if (statusElement) {
+      const originalStatus = statusElement.textContent;
       statusElement.textContent = 'Camera: Scanning...';
       statusElement.style.color = '#f59e0b';
+      
+      // Restore status after scanning
+      setTimeout(() => {
+        statusElement.textContent = originalStatus;
+        statusElement.style.color = isActive ? '#059669' : '#8b5cf6';
+      }, 2000);
     }
     
     // Get image data for analysis
@@ -247,14 +262,6 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
     
     // Analyze the image for card recognition
     recognizeCardFromImage(imageData, ctx);
-    
-    // Reset status
-    setTimeout(() => {
-      if (statusElement) {
-        statusElement.textContent = 'Camera: Active';
-        statusElement.style.color = '#059669';
-      }
-    }, 2000);
   };
 
   // Demo card scanning when real camera is not available
