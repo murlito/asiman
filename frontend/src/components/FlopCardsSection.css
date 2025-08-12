@@ -97,11 +97,38 @@
 }
 
 .scan-frame {
-  width: 180px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 150px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+.scan-card-slot {
+  width: 80px;
   height: 120px;
-  border: 2px dashed #fbbf24;
+  border: 3px solid #fbbf24;
   border-radius: 8px;
-  animation: pulse 2s infinite;
+  background: transparent;
+  animation: pulse-border 2s infinite;
+  position: relative;
+}
+
+.scan-card-slot::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  border-radius: 8px;
+  animation: pulse-border-inner 2s infinite reverse;
 }
 
 @keyframes pulse {
