@@ -20,7 +20,7 @@ export default function PlayingCard({ card, faceDown = false, delay = 0, animati
 
   return (
     <div 
-      className="playing-card-container"
+      className={`playing-card-container ${animationType ? `animation-${animationType}` : ''}`}
       style={{ animationDelay: `${delay}s` }}
     >
       <div className={`playing-card ${faceDown ? 'face-down' : 'face-up'}`}>
