@@ -97,8 +97,8 @@
 }
 
 .scan-frame {
-  width: 120px;
-  height: 80px;
+  width: 180px;
+  height: 120px;
   border: 2px dashed #fbbf24;
   border-radius: 8px;
   animation: pulse 2s infinite;
