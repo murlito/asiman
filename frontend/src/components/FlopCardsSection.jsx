@@ -106,27 +106,61 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
   };
 
   const scanCard = () => {
+    console.log('Scan card clicked, camera active:', isCameraActive);
+    
     if (!isCameraActive) {
+      console.log('Camera not active, showing alert');
       alert('Please start the camera first');
       return;
     }
 
     const video = document.getElementById('camera-video');
     const canvas = document.getElementById('camera-canvas');
+    
+    if (!video || !canvas) {
+      console.error('Video or canvas element not found');
+      alert('Camera elements not found');
+      return;
+    }
+    
+    if (video.videoWidth === 0 || video.videoHeight === 0) {
+      console.log('Video not ready yet');
+      alert('Camera is starting up, please wait a moment and try again');
+      return;
+    }
+
     const ctx = canvas.getContext('2d');
     
     // Set canvas size to match video
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
     
+    console.log(`Drawing video frame: ${canvas.width}x${canvas.height}`);
+    
     // Draw current video frame to canvas
     ctx.drawImage(video, 0, 0);
     
+    // Show scanning feedback
+    const statusElement = document.getElementById('camera-status');
+    if (statusElement) {
+      statusElement.textContent = 'Camera: Scanning...';
+      statusElement.style.color = '#f59e0b';
+    }
+    
     // Get image data for analysis
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    console.log('Image data captured, analyzing...');
     
     // Analyze the image for card recognition
     recognizeCardFromImage(imageData, ctx);
+    
+    // Reset status
+    setTimeout(() => {
+      if (statusElement) {
+        statusElement.textContent = 'Camera: Active';
+        statusElement.style.color = '#059669';
+      }
+    }, 2000);
   };
 
   const recognizeCardFromImage = (imageData, ctx) => {
