@@ -59,21 +59,26 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
       </div>
       
       <div className="flop-cards">
-        {Array.from({ length: 5 }).map((_, index) => (
-          <div key={index} className="flop-card-slot">
-            {cards[index] ? (
-              <PlayingCard 
-                card={cards[index]}
-                faceDown={false}
-                delay={index * 0.2}
-              />
-            ) : (
-              <div className="empty-flop-slot">
-                <div className="card-placeholder-flop"></div>
-              </div>
-            )}
-          </div>
-        ))}
+        {Array.from({ length: 5 }).map((_, index) => {
+          // Different animation types for each card position to make it more dynamic
+          const animationTypes = ['from-right', 'from-left', 'flip', 'slide-up', 'from-right'];
+          return (
+            <div key={index} className="flop-card-slot">
+              {cards[index] ? (
+                <PlayingCard 
+                  card={cards[index]}
+                  faceDown={false}
+                  delay={index * 0.3}
+                  animationType={animationTypes[index]}
+                />
+              ) : (
+                <div className="empty-flop-slot">
+                  <div className="card-placeholder-flop"></div>
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
