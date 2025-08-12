@@ -90,6 +90,57 @@ async def get_status_checks():
     status_checks = await db.status_checks.find().to_list(1000)
     return [StatusCheck(**status_check) for status_check in status_checks]
 
+@api_router.post("/scan-cards", response_model=CardScanResponse)
+async def scan_cards(request: CardScanRequest):
+    """OpenCV-based card detection endpoint"""
+    global train_ranks, train_suits
+    
+    if not train_ranks or not train_suits:
+        raise HTTPException(status_code=503, detail="Card training images not loaded")
+    
+    try:
+        import time
+        start_time = time.time()
+        
+        # Detect cards using OpenCV
+        detected_cards = opencv_cards.detect_cards_from_frame(
+            request.frame_data, 
+            train_ranks, 
+            train_suits
+        )
+        
+        processing_time = (time.time() - start_time) * 1000  # Convert to milliseconds
+        
+        # Convert to response format
+        card_responses = []
+        for card in detected_cards:
+            card_responses.append(DetectedCard(**card))
+        
+        return CardScanResponse(
+            cards=card_responses,
+            processing_time_ms=round(processing_time, 2),
+            frame_processed=True
+        )
+        
+    except Exception as e:
+        logger.error(f"Card detection error: {e}")
+        raise HTTPException(status_code=500, detail=f"Card detection failed: {str(e)}")
+
+@api_router.get("/scanner/health")
+async def scanner_health():
+    """Check if card scanner is ready"""
+    global train_ranks, train_suits
+    
+    status = {
+        "scanner_ready": train_ranks is not None and train_suits is not None,
+        "training_images_loaded": {
+            "ranks": len(train_ranks) if train_ranks else 0,
+            "suits": len(train_suits) if train_suits else 0
+        }
+    }
+    
+    return status
+
 # Include the router in the main app
 app.include_router(api_router)
 
