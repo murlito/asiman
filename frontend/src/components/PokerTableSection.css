@@ -224,13 +224,17 @@
 }
 
 .user-card-hover-container .playing-card {
-  transition: none;
+  transition: transform 0.3s ease;
 }
 
+/* Override the general hover effect to prevent position change */
 .user-card-hover-container:hover .playing-card {
-  transform: none;
+  transform: none !important;
+  z-index: 10;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
+/* Card flip effect on hover - only rotate, don't move */
 .user-card-hover-container:hover .playing-card.face-down .card-front {
   transform: rotateY(0deg);
 }
