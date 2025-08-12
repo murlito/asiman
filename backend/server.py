@@ -114,6 +114,71 @@ async def create_poker_game(request: CreateGameRequest):
     game_id = manager.create_game(request.small_blind, request.big_blind)
     return {"game_id": game_id, "message": "Game created successfully"}
 
+# Dealer-specific endpoints
+@api_router.get("/dealer/game-state/{game_id}")
+async def get_dealer_game_state(game_id: str):
+    """Get full game state for dealer (shows all player cards)"""
+    manager = get_game_manager()
+    game = manager.get_game(game_id)
+    
+    if not game:
+        raise HTTPException(status_code=404, detail="Game not found")
+    
+    # Dealer sees all cards (no hiding)
+    return game.to_dict(player_id=None)
+
+@api_router.post("/dealer/force-start/{game_id}")
+async def dealer_force_start_game(game_id: str):
+    """Force start a game (dealer override)"""
+    manager = get_game_manager()
+    game = manager.get_game(game_id)
+    
+    if not game:
+        raise HTTPException(status_code=404, detail="Game not found")
+    
+    try:
+        game.start_new_hand()
+        return {"message": "Game force-started by dealer"}
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@api_router.post("/dealer/next-phase/{game_id}")  
+async def dealer_next_phase(game_id: str):
+    """Force move to next game phase (dealer control)"""
+    manager = get_game_manager()
+    game = manager.get_game(game_id)
+    
+    if not game:
+        raise HTTPException(status_code=404, detail="Game not found")
+    
+    # Force end current betting round and move to next phase
+    game._end_betting_round()
+    return {"message": "Moved to next phase", "new_state": game.game_state.value}
+
+@api_router.post("/dealer/end-game/{game_id}")
+async def dealer_end_game(game_id: str):
+    """Force end a game (dealer control)"""
+    manager = get_game_manager()
+    game = manager.get_game(game_id)
+    
+    if not game:
+        raise HTTPException(status_code=404, detail="Game not found")
+    
+    game._end_hand()
+    return {"message": "Game ended by dealer"}
+
+@api_router.get("/dealer/all-games")
+async def get_all_games_for_dealer():
+    """Get detailed info about all games (dealer view)"""
+    manager = get_game_manager()
+    games = []
+    
+    for game_id, game in manager.games.items():
+        game_info = game.to_dict(player_id=None)  # Show all cards
+        games.append(game_info)
+    
+    return {"games": games}
+
 @api_router.post("/poker/join-game")
 async def join_poker_game(request: JoinGameRequest):
     """Join a poker game"""
