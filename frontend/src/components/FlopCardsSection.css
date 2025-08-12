@@ -10,7 +10,7 @@
 .flop-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 10px;
 }
 
@@ -33,6 +33,130 @@
   font-weight: bold;
   color: #1a1a1a;
   border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+/* Leave button under POT */
+.leave-button-under-pot {
+  margin-top: 8px;
+  width: 100%;
+  font-size: 12px;
+  padding: 6px 12px;
+}
+
+/* Camera Section */
+.camera-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.camera-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.camera-title {
+  font-size: 14px;
+  font-weight: bold;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+}
+
+.camera-screen {
+  position: relative;
+  width: 200px;
+  height: 150px;
+  background: #000;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid #1a1a1a;
+}
+
+#camera-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.camera-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.scan-frame {
+  width: 120px;
+  height: 80px;
+  border: 2px dashed #fbbf24;
+  border-radius: 8px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+.scan-instruction {
+  color: #fbbf24;
+  font-size: 10px;
+  font-weight: bold;
+  margin-top: 8px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.recognized-card-display {
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+  right: 5px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fbbf24;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+  text-align: center;
+  display: none;
+}
+
+.camera-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.camera-btn {
+  background: #1a1a1a;
+  color: #fbbf24;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.camera-btn:hover {
+  background: #333;
+  transform: scale(1.05);
+}
+
+.camera-btn:active {
+  transform: scale(0.95);
 }
 
 
