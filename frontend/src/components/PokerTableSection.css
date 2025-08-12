@@ -213,6 +213,27 @@
   gap: 20px;
 }
 
+.user-card-hover-container {
+  position: relative;
+  cursor: pointer;
+}
+
+.user-card-hover-container:hover .playing-card.face-down .card-front {
+  transform: rotateY(0deg);
+}
+
+.user-card-hover-container:hover .playing-card.face-down .card-back {  
+  transform: rotateY(-180deg);
+}
+
+.user-card-hover-container:active .playing-card.face-down .card-front {
+  transform: rotateY(0deg);
+}
+
+.user-card-hover-container:active .playing-card.face-down .card-back {
+  transform: rotateY(-180deg);
+}
+
 .hand-cards-container .playing-card-container {
   width: 140px;
   height: 196px;
