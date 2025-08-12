@@ -1,7 +1,7 @@
 import React from 'react';
 import './PlayingCard.css';
 
-export default function PlayingCard({ card, faceDown = false, delay = 0 }) {
+export default function PlayingCard({ card, faceDown = false, delay = 0, animationType = 'default' }) {
   if (!card && !faceDown) return null;
 
   const getSuitColor = (suit) => {
