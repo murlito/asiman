@@ -20,7 +20,7 @@
 .table-surface-new {
   width: 450px;
   height: 300px;
-  transform: rotateX(45deg) rotateY(-5deg);
+  transform: none;
   transform-style: preserve-3d;
 }
 
