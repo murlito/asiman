@@ -1,9 +1,10 @@
 import React from 'react';
 import { Button } from './ui/button';
 import PlayingCardBack from './PlayingCardBack';
+import PlayingCard from './PlayingCard';
 import './PokerTableSection.css';
 
-export default function PokerTableSection({ players, dealerPosition, onPlayerAction, gameInfo }) {
+export default function PokerTableSection({ players, dealerPosition, onPlayerAction, gameInfo, userCards, userChips }) {
   // 8 positions around the table
   const getPlayerPosition = (position) => {
     const positions = [
