@@ -54,20 +54,47 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
         statusElement.style.color = '#f59e0b';
       }
 
+      // Check if getUserMedia is supported
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        throw new Error('getUserMedia not supported in this browser');
+      }
+
       const video = document.getElementById('camera-video');
       
-      // Try to get camera access
-      const stream = await navigator.mediaDevices.getUserMedia({ 
-        video: { 
-          width: { ideal: 640 },
-          height: { ideal: 480 },
-          facingMode: 'environment' // Use back camera if available
-        } 
-      });
+      // Try different camera configurations
+      const constraints = [
+        { video: { width: 640, height: 480, facingMode: 'environment' } },
+        { video: { width: 640, height: 480 } },
+        { video: { width: 320, height: 240 } },
+        { video: true }
+      ];
       
-      console.log('Camera stream obtained');
+      let stream = null;
+      let lastError = null;
+      
+      for (const constraint of constraints) {
+        try {
+          console.log('Trying constraint:', constraint);
+          stream = await navigator.mediaDevices.getUserMedia(constraint);
+          console.log('Camera stream obtained with constraint:', constraint);
+          break;
+        } catch (err) {
+          console.warn('Constraint failed:', constraint, err.message);
+          lastError = err;
+        }
+      }
+      
+      if (!stream) {
+        throw lastError || new Error('All camera configurations failed');
+      }
+      
       video.srcObject = stream;
       setIsCameraActive(true);
+      
+      // Wait for video to be ready
+      await new Promise((resolve) => {
+        video.addEventListener('loadedmetadata', resolve, { once: true });
+      });
       
       // Update button and status
       const startBtn = document.getElementById('start-camera');
@@ -92,17 +119,54 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
         statusElement.style.color = '#dc2626';
       }
       
-      // More detailed error message
+      // Provide specific error messages and solutions
+      let errorMessage = 'Camera error: ';
+      let solution = '';
+      
       if (err.name === 'NotAllowedError') {
-        alert('Camera access denied. Please allow camera permissions and refresh the page.');
+        errorMessage = 'Camera access denied.';
+        solution = 'Please click "Allow" when prompted for camera permission, or check your browser settings to enable camera access for this site.';
       } else if (err.name === 'NotFoundError') {
-        alert('No camera found. Please connect a camera and try again.');
+        errorMessage = 'No camera found.';
+        solution = 'Please connect a camera to your device and refresh the page.';
       } else if (err.name === 'NotSupportedError') {
-        alert('Camera not supported in this browser. Try Chrome or Firefox.');
+        errorMessage = 'Camera not supported.';
+        solution = 'Try using Chrome, Firefox, or Safari browser. Some browsers require HTTPS for camera access.';
+      } else if (err.message.includes('getUserMedia not supported')) {
+        errorMessage = 'Browser not supported.';
+        solution = 'Please use a modern browser like Chrome, Firefox, or Safari.';
+      } else if (err.name === 'NotReadableError') {
+        errorMessage = 'Camera is in use.';
+        solution = 'Close other applications that might be using the camera and try again.';
       } else {
-        alert(`Camera error: ${err.message}. Please check camera permissions.`);
+        errorMessage = `Camera error: ${err.message}`;
+        solution = 'Try refreshing the page or using a different browser.';
       }
+      
+      // Show user-friendly error dialog
+      alert(`${errorMessage}\n\n${solution}`);
+      
+      // Also try to enable demo mode
+      enableDemoMode();
     }
+  };
+
+  // Demo mode for when camera is not available
+  const enableDemoMode = () => {
+    console.log('Enabling demo mode');
+    const statusElement = document.getElementById('camera-status');
+    if (statusElement) {
+      statusElement.textContent = 'Camera: Demo Mode';
+      statusElement.style.color = '#8b5cf6';
+    }
+    
+    const startBtn = document.getElementById('start-camera');
+    if (startBtn) {
+      startBtn.textContent = 'Demo Mode';
+      startBtn.style.background = '#8b5cf6';
+    }
+    
+    setIsCameraActive(true); // Enable scanning in demo mode
   };
 
   const scanCard = () => {
