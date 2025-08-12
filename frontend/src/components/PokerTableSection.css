@@ -227,7 +227,7 @@
 }
 
 .user-card-hover-container:hover .playing-card {
-  transform: translateY(-5px);
+  transform: none;
 }
 
 .user-card-hover-container:hover .playing-card.face-down .card-front {
