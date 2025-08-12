@@ -175,3 +175,42 @@
   transform: translateY(-3px);
   box-shadow: 0 8px 25px rgba(30, 64, 175, 0.4);
 }
+
+.user-cards-next-to-table {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.user-hand-cards-table {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.hand-cards-container {
+  display: flex;
+  gap: 10px;
+}
+
+.hand-cards-container .playing-card-container {
+  width: 70px;
+  height: 98px;
+}
+
+.chips-info-table {
+  text-align: center;
+}
+
+.chips-amount-table {
+  font-size: 20px;
+  font-weight: bold;
+  color: #fbbf24;
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+}
