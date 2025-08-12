@@ -20,26 +20,20 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
   const [recognizedCard, setRecognizedCard] = useState(null);
 
   useEffect(() => {
-    // Initialize camera functionality
-    const initCamera = () => {
-      const startCameraBtn = document.getElementById('start-camera');
-      const scanCardBtn = document.getElementById('scan-card');
-      const demoBtn = document.getElementById('demo-mode');
-      
-      if (startCameraBtn && scanCardBtn) {
-        startCameraBtn.addEventListener('click', startCamera);
-        scanCardBtn.addEventListener('click', scanCard);
-      }
-      
-      if (demoBtn) {
-        demoBtn.addEventListener('click', () => enableDemoMode());
-      }
-    };
+    // Auto-start camera when component mounts
+    setTimeout(() => {
+      startCamera();
+    }, 1000);
 
-    // Initialize after component mounts
-    setTimeout(initCamera, 100);
+    // Auto-scan every 2 seconds when camera is active
+    const scanInterval = setInterval(() => {
+      if (isCameraActive) {
+        scanCard();
+      }
+    }, 2000);
 
     return () => {
+      clearInterval(scanInterval);
       // Cleanup camera stream
       const video = document.getElementById('camera-video');
       if (video && video.srcObject) {
@@ -47,7 +41,7 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
         tracks.forEach(track => track.stop());
       }
     };
-  }, []);
+  }, [isCameraActive]);
 
   const startCamera = async () => {
     try {
