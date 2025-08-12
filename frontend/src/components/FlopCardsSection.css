@@ -131,6 +131,26 @@
   animation: pulse-border-inner 2s infinite reverse;
 }
 
+@keyframes pulse-border {
+  0%, 100% {
+    border-color: #fbbf24;
+    box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7);
+  }
+  50% {
+    border-color: #f59e0b;
+    box-shadow: 0 0 0 8px rgba(251, 191, 36, 0);
+  }
+}
+
+@keyframes pulse-border-inner {
+  0%, 100% {
+    border-color: rgba(251, 191, 36, 0.3);
+  }
+  50% {
+    border-color: rgba(251, 191, 36, 0.6);
+  }
+}
+
 @keyframes pulse {
   0%, 100% { opacity: 0.7; }
   50% { opacity: 1; }
