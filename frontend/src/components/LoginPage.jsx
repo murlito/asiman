@@ -36,7 +36,8 @@ const LoginPage = ({ onLogin }) => {
     setError('');
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_URL || process.env.REACT_APP_BACKEND_URL}/api/poker/join-game`, {
+      const backendUrl = import.meta.env.VITE_REACT_APP_BACKEND_URL || process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
+      const response = await fetch(`${backendUrl}/api/poker/join-game`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
