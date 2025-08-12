@@ -5,26 +5,27 @@ import PlayingCard from './PlayingCard';
 import './PokerTableSection.css';
 
 export default function PokerTableSection({ players, dealerPosition, onPlayerAction, gameInfo, userCards, userChips }) {
-  // 8 positions around the table - mathematically proportional
+  // 9 positions around the table - positioned OUTSIDE the table boundaries
   const getPlayerPosition = (position) => {
-    // Perfect elliptical distribution around the table
-    // Center of table at (50, 50), ellipse radii: horizontal=42, vertical=35
+    // Players positioned outside/around the poker table, not on the edge
+    // Larger ellipse to place players behind the table
     const centerX = 50;
     const centerY = 50; 
-    const radiusX = 42; // Horizontal radius
-    const radiusY = 35; // Vertical radius
+    const radiusX = 48; // Increased horizontal radius to place players outside table
+    const radiusY = 42; // Increased vertical radius to place players outside table
     
-    // Calculate angle for each position (8 positions = 45° apart)
+    // Calculate angle for each position (9 positions = 40° apart)
     // Start from bottom (270°) and go clockwise
     const angles = [
       270, // Player 1 - Bottom center (main player)
-      225, // Player 2 - Bottom left  
-      180, // Player 3 - Left
-      135, // Player 4 - Top left
-      90,  // Player 5 - Top center left
-      45,  // Player 6 - Top center right  
-      0,   // Player 7 - Top right
-      315  // Player 8 - Right
+      230, // Player 2 - Bottom left  
+      190, // Player 3 - Left bottom
+      150, // Player 4 - Left top
+      110, // Player 5 - Top left
+      70,  // Player 6 - Top right
+      30,  // Player 7 - Right top  
+      350, // Player 8 - Right bottom
+      310  // Player 9 - Bottom right
     ];
     
     const angle = angles[position] || angles[0];
