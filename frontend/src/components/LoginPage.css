@@ -1,0 +1,214 @@
+.login-page {
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-background {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.poker-cards-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.1;
+}
+
+.card-bg {
+  position: absolute;
+  width: 120px;
+  height: 168px;
+  background: linear-gradient(135deg, #1e40af 0%, #3730a3 50%, #581c87 100%);
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  animation: floatCard 6s ease-in-out infinite;
+}
+
+.card1 {
+  top: 10%;
+  left: 15%;
+  animation-delay: 0s;
+}
+
+.card2 {
+  top: 20%;
+  right: 20%;
+  animation-delay: 2s;
+}
+
+.card3 {
+  bottom: 25%;
+  left: 10%;
+  animation-delay: 4s;
+}
+
+.card4 {
+  bottom: 15%;
+  right: 15%;
+  animation-delay: 1s;
+}
+
+@keyframes floatCard {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(5deg);
+  }
+}
+
+.login-container {
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(20px);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 3rem;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+  z-index: 10;
+}
+
+.login-header {
+  margin-bottom: 2.5rem;
+}
+
+.game-title {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #fbbf24;
+  text-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
+  margin: 0;
+  letter-spacing: 4px;
+}
+
+.game-subtitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: white;
+  margin: 0.5rem 0 0 0;
+  letter-spacing: 8px;
+  opacity: 0.9;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  text-align: left;
+}
+
+.input-label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 0.5rem;
+}
+
+.player-name-input {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  font-size: 1.2rem;
+  color: white;
+  transition: all 0.3s ease;
+  height: 60px;
+}
+
+.player-name-input:focus {
+  border-color: #fbbf24;
+  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.2);
+  background: rgba(255, 255, 255, 0.15);
+  outline: none;
+}
+
+.player-name-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.enter-game-btn {
+  background: linear-gradient(135deg, #059669, #047857);
+  border: none;
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: white;
+  height: 60px;
+  letter-spacing: 2px;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(5, 150, 105, 0.3);
+}
+
+.enter-game-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #047857, #065f46);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(5, 150, 105, 0.4);
+}
+
+.enter-game-btn:disabled {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.3);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.login-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 1.5rem;
+}
+
+.game-info {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1rem;
+  margin: 0;
+  font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .login-container {
+    margin: 1rem;
+    padding: 2rem;
+  }
+  
+  .game-title {
+    font-size: 2.5rem;
+    letter-spacing: 2px;
+  }
+  
+  .game-subtitle {
+    font-size: 1.2rem;
+    letter-spacing: 4px;
+  }
+  
+  .card-bg {
+    width: 80px;
+    height: 112px;
+  }
+}
