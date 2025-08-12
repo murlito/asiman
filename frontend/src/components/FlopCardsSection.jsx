@@ -171,7 +171,9 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
       startBtn.style.background = '#8b5cf6';
     }
     
-    setIsCameraActive(true); // Enable scanning in demo mode
+    // Enable camera active state for demo mode
+    setIsCameraActive(true);
+    console.log('Demo mode enabled, camera state set to active');
   };
 
   const scanCard = () => {
