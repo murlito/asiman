@@ -168,6 +168,9 @@ frontend:
         - working: false
           agent: "main"
           comment: "Implemented ultra-simple card detection algorithm. Removed all complex analysis functions and multiple rejection criteria. Now uses basic light area detection with minimal thresholds."
+        - working: false
+          agent: "main"  
+          comment: "User reported scanner can't determine actual playing cards, suits and symbols. Ultra-simple algorithm detects light areas but doesn't analyze real cards. Implementing balanced approach for reliable detection + accurate identification."
 
 metadata:
   created_by: "main_agent"
