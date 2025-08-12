@@ -110,7 +110,21 @@ export const mockData = {
       avatar: null,
       folded: false,
       showCards: false,
-      position: 7 // Bottom right
+      position: 7 // Right bottom
+    },
+    {
+      id: 9,
+      name: "Player 9",
+      chips: 850,
+      bet: 0,
+      cards: [
+        { rank: "A", suit: "hearts" },
+        { rank: "Q", suit: "clubs" }
+      ],
+      avatar: null,
+      folded: false,
+      showCards: false,
+      position: 8 // Bottom right
     }
   ],
 
