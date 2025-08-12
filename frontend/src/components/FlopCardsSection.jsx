@@ -297,10 +297,10 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
         const whitenessRatio = whitePixels / totalPixels;
         const edgeRatio = edgePixels / totalPixels;
         
-        // Stricter criteria for card detection
-        if (whitenessRatio > 0.7 && // Must be mostly white
-            edgeRatio > 0.1 && edgeRatio < 0.4 && // Must have some edges but not too chaotic
-            whitePixels > 400) { // Minimum white pixel count
+        // More relaxed criteria for card detection
+        if (whitenessRatio > 0.5 && // Reduced from 0.7 to 0.5
+            edgeRatio > 0.05 && edgeRatio < 0.5 && // More flexible edge range
+            whitePixels > 200) { // Reduced from 400 to 200
           areas.push({
             x: x,
             y: y,
