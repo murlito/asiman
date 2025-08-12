@@ -106,6 +106,75 @@ async def get_status_checks():
     status_checks = await db.status_checks.find().to_list(1000)
     return [StatusCheck(**status_check) for status_check in status_checks]
 
+# Poker Game Endpoints
+@api_router.post("/poker/create-game")
+async def create_poker_game(request: CreateGameRequest):
+    """Create a new poker game"""
+    manager = get_game_manager()
+    game_id = manager.create_game(request.small_blind, request.big_blind)
+    return {"game_id": game_id, "message": "Game created successfully"}
+
+@api_router.post("/poker/join-game")
+async def join_poker_game(request: JoinGameRequest):
+    """Join a poker game"""
+    manager = get_game_manager()
+    player_id = manager.join_game(request.game_id, request.player_name, request.chips)
+    
+    if player_id:
+        return {"player_id": player_id, "message": "Joined game successfully"}
+    else:
+        raise HTTPException(status_code=400, detail="Could not join game (game full or not found)")
+
+@api_router.post("/poker/leave-game/{player_id}")
+async def leave_poker_game(player_id: str):
+    """Leave current poker game"""
+    manager = get_game_manager()
+    success = manager.leave_game(player_id)
+    
+    if success:
+        return {"message": "Left game successfully"}
+    else:
+        raise HTTPException(status_code=404, detail="Player not found in any game")
+
+@api_router.post("/poker/start-game/{game_id}")
+async def start_poker_game(game_id: str):
+    """Start a poker game"""
+    manager = get_game_manager()
+    success = manager.start_game(game_id)
+    
+    if success:
+        return {"message": "Game started successfully"}
+    else:
+        raise HTTPException(status_code=400, detail="Cannot start game (need at least 2 players)")
+
+@api_router.post("/poker/action/{player_id}")
+async def make_poker_action(player_id: str, request: PlayerActionRequest):
+    """Make a poker action (fold, check, call, raise, all_in)"""
+    manager = get_game_manager()
+    success = manager.make_action(player_id, request.action, request.raise_amount)
+    
+    if success:
+        return {"message": "Action completed successfully"}
+    else:
+        raise HTTPException(status_code=400, detail="Invalid action or not your turn")
+
+@api_router.get("/poker/game-state/{player_id}")
+async def get_poker_game_state(player_id: str):
+    """Get current game state for a player"""
+    manager = get_game_manager()
+    game_state = manager.get_game_state(player_id)
+    
+    if game_state:
+        return game_state
+    else:
+        raise HTTPException(status_code=404, detail="Player not found in any game")
+
+@api_router.get("/poker/games")
+async def list_poker_games():
+    """List all active poker games"""
+    manager = get_game_manager()
+    return {"games": manager.list_games()}
+
 @api_router.post("/scan-cards", response_model=CardScanResponse)
 async def scan_cards(request: CardScanRequest):
     """OpenCV-based card detection endpoint"""
