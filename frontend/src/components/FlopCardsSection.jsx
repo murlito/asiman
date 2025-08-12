@@ -201,6 +201,7 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
     
     if (cardInfo) {
       console.log('Card recognized:', cardInfo);
+      console.log('Debug info:', cardInfo.debug);
       setRecognizedCard(cardInfo);
       
       // Call the parent callback to update user cards
@@ -208,17 +209,20 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
         onCardScanned(cardInfo);
       }
       
-      // Display recognition result
+      // Display recognition result with debug info
       const displayElement = document.getElementById('recognized-card');
       if (displayElement) {
-        displayElement.textContent = `${cardInfo.name} (${Math.round(cardInfo.confidence * 100)}%)`;
+        const debugInfo = cardInfo.debug ? 
+          ` (R:${cardInfo.debug.redPixels} B:${cardInfo.debug.blackPixels} S:${cardInfo.debug.symbolCount})` : '';
+        
+        displayElement.textContent = `${cardInfo.name} ${Math.round(cardInfo.confidence * 100)}%${debugInfo}`;
         displayElement.style.display = 'block';
         displayElement.style.background = cardInfo.confidence > 0.7 ? 'rgba(0, 150, 0, 0.8)' : 'rgba(150, 150, 0, 0.8)';
         
         // Keep result visible longer
         setTimeout(() => {
           displayElement.style.display = 'none';
-        }, 5000);
+        }, 4000);
       }
     }
     // Don't show "no card detected" message for automatic scanning
