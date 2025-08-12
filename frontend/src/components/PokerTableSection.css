@@ -185,6 +185,10 @@
   flex-direction: column;
   align-items: center;
   gap: 20px;
+  flex: 1;
+  background: linear-gradient(135deg, #10b981, #059669);
+  padding: 20px;
+  border-left: 2px solid rgba(255, 255, 255, 0.2);
 }
 
 .user-hand-cards-table {
