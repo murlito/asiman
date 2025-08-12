@@ -16,9 +16,11 @@ const LoginPage = ({ onLogin }) => {
 
   const loadGames = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_URL || process.env.REACT_APP_BACKEND_URL}/api/poker/games`);
+      const backendUrl = import.meta.env.VITE_REACT_APP_BACKEND_URL || process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
+      const response = await fetch(`${backendUrl}/api/poker/games`);
       const data = await response.json();
       setGames(data.games || []);
+      console.log('Loaded games:', data.games);
     } catch (err) {
       console.error('Failed to load games:', err);
     }
