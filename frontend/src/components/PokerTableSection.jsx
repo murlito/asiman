@@ -4,7 +4,7 @@ import PlayingCardBack from './PlayingCardBack';
 import PlayingCard from './PlayingCard';
 import './PokerTableSection.css';
 
-export default function PokerTableSection({ players, dealerPosition, onPlayerAction, gameInfo, userCards, userChips }) {
+export default function PokerTableSection({ players, dealerPosition, onPlayerAction, gameInfo, userCards, userChips, newCardIndex }) {
   // 9 positions around the table - positioned OUTSIDE the table boundaries
   const getPlayerPosition = (position) => {
     // Players positioned outside/around the poker table, not on the edge
