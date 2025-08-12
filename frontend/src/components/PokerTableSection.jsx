@@ -100,6 +100,13 @@ export default function PokerTableSection({ players, dealerPosition, onPlayerAct
         {/* User Cards next to table */}
         <div className="user-cards-next-to-table">
           <div className="user-hand-cards-table">
+            {/* Chips info moved to the top */}
+            <div className="chips-info-table">
+              <div className="chips-label-table">Your Stack</div>
+              <div className="chips-amount-table">${userChips}</div>
+            </div>
+            
+            {/* User cards below */}
             <div className="hand-cards-container">
               {userCards && userCards.map((card, index) => (
                 <div key={index} className="user-card-hover-container">
@@ -110,9 +117,6 @@ export default function PokerTableSection({ players, dealerPosition, onPlayerAct
                   />
                 </div>
               ))}
-            </div>
-            <div className="chips-info-table">
-              <div className="chips-amount-table">${userChips}</div>
             </div>
           </div>
         </div>
