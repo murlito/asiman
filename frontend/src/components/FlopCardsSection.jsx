@@ -168,53 +168,22 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
   };
 
   const scanCard = () => {
-    console.log('Scan card clicked');
-    
-    const statusElement = document.getElementById('camera-status');
-    const currentStatus = statusElement ? statusElement.textContent : '';
-    
-    // Check different status states
-    const isDemo = currentStatus.includes('Demo Mode');
-    const isActive = currentStatus.includes('Active');
-    const isOff = currentStatus.includes('Off');
-    const isError = currentStatus.includes('Error');
-    
-    console.log('Camera status:', currentStatus, { isDemo, isActive, isOff, isError });
-    
-    // Only allow scanning if camera is active OR in demo mode
-    if ((isOff || isError) && !isDemo) {
-      console.log('Camera not ready and not in demo mode');
-      alert('Please start the camera first or enable Demo Mode to scan cards');
+    if (!isCameraActive) {
+      console.log('Camera not active, skipping scan');
       return;
     }
 
     const video = document.getElementById('camera-video');
     const canvas = document.getElementById('camera-canvas');
     
-    if (!canvas) {
-      console.error('Canvas element not found');
-      alert('Camera elements not found');
+    if (!video || !canvas) {
+      console.error('Video or canvas element not found');
       return;
     }
 
-    // Demo mode scanning
-    if (isDemo) {
-      console.log('Running in demo mode - simulating card detection');
-      simulateDemoCardScan();
-      return;
-    }
-
-    // Real camera scanning
-    if (!video) {
-      console.error('Video element not found');
-      alert('Camera video not found');
-      return;
-    }
-    
     // Check if video has actual content
     if (!video.srcObject || video.videoWidth === 0 || video.videoHeight === 0) {
-      console.log('Video not ready yet - no stream or dimensions');
-      alert('Camera is starting up or not connected. Please wait or use Demo Mode.');
+      console.log('Video not ready yet');
       return;
     }
 
@@ -224,27 +193,13 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
     
-    console.log(`Drawing video frame: ${canvas.width}x${canvas.height}`);
+    console.log(`Auto-scanning frame: ${canvas.width}x${canvas.height}`);
     
     // Draw current video frame to canvas
     ctx.drawImage(video, 0, 0);
     
-    // Show scanning feedback
-    if (statusElement) {
-      const originalStatus = statusElement.textContent;
-      statusElement.textContent = 'Camera: Scanning...';
-      statusElement.style.color = '#f59e0b';
-      
-      // Restore status after scanning
-      setTimeout(() => {
-        statusElement.textContent = originalStatus;
-        statusElement.style.color = isActive ? '#059669' : '#8b5cf6';
-      }, 2000);
-    }
-    
     // Get image data for analysis
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    console.log('Image data captured, analyzing...');
     
     // Analyze the image for card recognition
     recognizeCardFromImage(imageData, ctx);
