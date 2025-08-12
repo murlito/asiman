@@ -146,26 +146,7 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
     }
   };
 
-  // Demo mode for when camera is not available
-  const enableDemoMode = () => {
-    console.log('Enabling demo mode');
-    const statusElement = document.getElementById('camera-status');
-    if (statusElement) {
-      statusElement.textContent = 'Camera: Demo Mode';
-      statusElement.style.color = '#8b5cf6';
-    }
-    
-    // Don't change Start Camera button - only change Demo Mode button
-    const demoBtn = document.getElementById('demo-mode');
-    if (demoBtn) {
-      demoBtn.textContent = 'Demo Active';
-      demoBtn.style.background = '#8b5cf6';
-    }
-    
-    // Enable camera active state for demo mode
-    setIsCameraActive(true);
-    console.log('Demo mode enabled, camera state set to active');
-  };
+
 
   const scanCard = () => {
     if (!isCameraActive) {
