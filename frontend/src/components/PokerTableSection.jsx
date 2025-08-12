@@ -102,12 +102,13 @@ export default function PokerTableSection({ players, dealerPosition, onPlayerAct
           <div className="user-hand-cards-table">
             <div className="hand-cards-container">
               {userCards && userCards.map((card, index) => (
-                <PlayingCard 
-                  key={index}
-                  card={card}
-                  faceDown={false}
-                  delay={index * 0.1}
-                />
+                <div key={index} className="user-card-hover-container">
+                  <PlayingCard 
+                    card={card}
+                    faceDown={true}
+                    delay={index * 0.1}
+                  />
+                </div>
               ))}
             </div>
             <div className="chips-info-table">
