@@ -393,8 +393,11 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
               <video id="camera-video" autoPlay playsInline muted></video>
               <canvas id="camera-canvas" style={{ display: 'none' }}></canvas>
               <div className="camera-overlay">
-                <div className="scan-frame"></div>
-                <div className="scan-instruction">Card Scanner</div>
+                <div className="scan-frame">
+                  <div className="scan-card-slot"></div>
+                  <div className="scan-card-slot"></div>
+                </div>
+                <div className="scan-instruction">Место карты в слоты</div>
               </div>
               <div id="recognized-card" className="recognized-card-display"></div>
             </div>
