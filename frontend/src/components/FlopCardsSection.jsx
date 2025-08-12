@@ -3,7 +3,19 @@ import { Button } from './ui/button';
 import PlayingCard from './PlayingCard';
 import './FlopCardsSection.css';
 
-export default function FlopCardsSection({ cards, gameInfo }) {
+export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
+  const handleLeave = () => {
+    if (window.confirm('Are you sure you want to leave the game?')) {
+      if (onLeave) {
+        onLeave();
+      } else {
+        // Default behavior - show alert or reload
+        alert('Leaving game...');
+        window.location.reload();
+      }
+    }
+  };
+
   return (
     <div className="flop-cards-container">
       <div className="flop-header">
@@ -13,7 +25,7 @@ export default function FlopCardsSection({ cards, gameInfo }) {
             <span className="pot-info">Pot: ${gameInfo.pot}</span>
           </div>
         </div>
-        <Button variant="destructive" size="sm">Leave</Button>
+        <Button variant="destructive" size="sm" onClick={handleLeave}>Leave</Button>
       </div>
       
       <div className="flop-cards">
