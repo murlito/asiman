@@ -341,34 +341,70 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
     let blackPixels = 0;
     let cornerBrightness = [];
     let symbolPixels = [];
+    let whitePixels = 0;
     
     // Analyze corner pixels more thoroughly
     corners.forEach((pixel, index) => {
       const brightness = (pixel.r + pixel.g + pixel.b) / 3;
       cornerBrightness.push(brightness);
       
-      // Detect dark symbols (text/numbers)
-      if (brightness < 100) {
+      // Count white pixels (card background)
+      if (brightness > 240) {
+        whitePixels++;
+      }
+      
+      // Detect dark symbols (text/numbers) with stricter criteria
+      if (brightness < 80) { // Darker threshold for clear symbols
         symbolPixels.push({ brightness, index, ...pixel });
         
-        if (pixel.r > pixel.g + 50 && pixel.r > pixel.b + 50) {
+        // More precise color detection
+        const isReddish = pixel.r > (pixel.g + pixel.b + 100);
+        const isBlackish = (pixel.r + pixel.g + pixel.b) < 150;
+        
+        if (isReddish && pixel.r > 150) {
           redPixels++; // Red card (hearts/diamonds)
-        } else {
+        } else if (isBlackish) {
           blackPixels++; // Black card (spades/clubs)
         }
       }
     });
     
-    // Determine suit based on color analysis
+    // Strict validation - must have enough white background
+    const backgroundRatio = whitePixels / corners.length;
+    if (backgroundRatio < 0.6) { // Must be at least 60% white background
+      console.log('Rejected: insufficient white background', backgroundRatio);
+      return null;
+    }
+    
+    // Must have clear color distinction
+    const totalColorPixels = redPixels + blackPixels;
+    if (totalColorPixels < 20) { // Must have at least 20 colored pixels
+      console.log('Rejected: insufficient colored pixels', totalColorPixels);
+      return null;
+    }
+    
+    // Determine suit based on color analysis with higher confidence threshold
+    const colorConfidence = Math.abs(redPixels - blackPixels) / totalColorPixels;
+    if (colorConfidence < 0.3) { // Colors must be clearly distinct
+      console.log('Rejected: unclear color distinction', colorConfidence);
+      return null;
+    }
+    
     const isRed = redPixels > blackPixels;
     const suitColor = isRed ? 'red' : 'black';
     
     // Enhanced rank detection based on symbol pattern analysis
     const rankInfo = analyzeSymbolPatterns(symbolPixels, cornerBrightness);
     
-    // Card database for recognition
+    // Reject if rank confidence is too low
+    if (rankInfo.confidence < 0.4) {
+      console.log('Rejected: low rank confidence', rankInfo.confidence);
+      return null;
+    }
+    
+    // More conservative card database - only common cards
     const possibleCards = [
-      // All spades cards (since you're testing with spades)
+      // Spades
       { rank: 'A', suit: 'spades', name: 'Ace of Spades', color: 'black' },
       { rank: '2', suit: 'spades', name: '2 of Spades', color: 'black' },
       { rank: '3', suit: 'spades', name: '3 of Spades', color: 'black' },
@@ -383,7 +419,7 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
       { rank: 'Q', suit: 'spades', name: 'Queen of Spades', color: 'black' },
       { rank: 'K', suit: 'spades', name: 'King of Spades', color: 'black' },
       
-      // Hearts cards
+      // Hearts
       { rank: 'A', suit: 'hearts', name: 'Ace of Hearts', color: 'red' },
       { rank: '2', suit: 'hearts', name: '2 of Hearts', color: 'red' },
       { rank: '3', suit: 'hearts', name: '3 of Hearts', color: 'red' },
@@ -396,19 +432,7 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
       { rank: '10', suit: 'hearts', name: '10 of Hearts', color: 'red' },
       { rank: 'J', suit: 'hearts', name: 'Jack of Hearts', color: 'red' },
       { rank: 'Q', suit: 'hearts', name: 'Queen of Hearts', color: 'red' },
-      { rank: 'K', suit: 'hearts', name: 'King of Hearts', color: 'red' },
-      
-      // Diamonds cards
-      { rank: 'A', suit: 'diamonds', name: 'Ace of Diamonds', color: 'red' },
-      { rank: '3', suit: 'diamonds', name: '3 of Diamonds', color: 'red' },
-      { rank: '7', suit: 'diamonds', name: '7 of Diamonds', color: 'red' },
-      { rank: '10', suit: 'diamonds', name: '10 of Diamonds', color: 'red' },
-      
-      // Clubs cards
-      { rank: 'A', suit: 'clubs', name: 'Ace of Clubs', color: 'black' },
-      { rank: '3', suit: 'clubs', name: '3 of Clubs', color: 'black' },
-      { rank: '7', suit: 'clubs', name: '7 of Clubs', color: 'black' },
-      { rank: '10', suit: 'clubs', name: '10 of Clubs', color: 'black' }
+      { rank: 'K', suit: 'hearts', name: 'King of Hearts', color: 'red' }
     ];
     
     // Filter cards by detected color
@@ -421,20 +445,30 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
     // Use rank detection to select the most likely card
     const selectedCard = selectCardByRank(colorMatchingCards, rankInfo);
     
-    // Calculate confidence based on color certainty and pattern matching
-    const colorConfidence = Math.abs(redPixels - blackPixels) / (redPixels + blackPixels);
-    const patternConfidence = rankInfo.confidence || 0.5;
-    const confidence = Math.min(0.95, (colorConfidence + patternConfidence) / 2 + cardArea.whiteness);
+    // Calculate final confidence with stricter requirements
+    const finalConfidence = Math.min(0.9, 
+      (colorConfidence * 0.4) + 
+      (rankInfo.confidence * 0.4) + 
+      (backgroundRatio * 0.2)
+    );
+    
+    // Only return if confidence is high enough
+    if (finalConfidence < 0.6) {
+      console.log('Rejected: low final confidence', finalConfidence);
+      return null;
+    }
     
     return {
       ...selectedCard,
-      confidence: confidence,
+      confidence: finalConfidence,
       area: cardArea,
       debug: {
         redPixels,
         blackPixels,
         symbolCount: symbolPixels.length,
-        detectedRank: rankInfo.rank
+        detectedRank: rankInfo.rank,
+        backgroundRatio: Math.round(backgroundRatio * 100),
+        colorConfidence: Math.round(colorConfidence * 100)
       }
     };
   };
