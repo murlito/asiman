@@ -13,6 +13,19 @@
   align-items: center;
   gap: 40px;
   flex: 1;
+  position: relative;
+}
+
+.table-and-cards-container::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 10%;
+  width: 2px;
+  height: 80%;
+  background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transform: translateX(-50%);
+  z-index: 1;
 }
 
 .table-area-new {
