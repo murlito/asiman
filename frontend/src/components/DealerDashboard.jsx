@@ -25,11 +25,19 @@ const DealerDashboard = () => {
 
   const loadGames = async () => {
     try {
-      const response = await fetch(`${getBackendUrl()}/api/poker/games`);
+      const backendUrl = getBackendUrl();
+      console.log('Dealer loading games from:', backendUrl);
+      
+      const response = await fetch(`${backendUrl}/api/poker/games`);
+      console.log('Games response status:', response.status);
+      
       const data = await response.json();
+      console.log('Games data received:', data);
+      
       setGames(data.games || []);
     } catch (err) {
       console.error('Failed to load games:', err);
+      setError(`Failed to load games: ${err.message}`);
     }
   };
 
