@@ -39,16 +39,9 @@
   
   .bottom-sections {
     height: 75vh;
-    flex-direction: column;
   }
   
-  .table-section {
+  .table-section-full {
     width: 100%;
-    height: 60%;
-  }
-  
-  .user-cards-section {
-    width: 100%;
-    height: 40%;
   }
 }
