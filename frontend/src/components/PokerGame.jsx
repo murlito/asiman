@@ -82,15 +82,26 @@ export default function PokerGame({ playerName, onLeaveGame }) {
     // Add to user cards (maximum 2 cards for poker)
     setCurrentPlayerHand(prevCards => {
       const updatedCards = [...prevCards];
+      let newIndex = -1;
       
       if (updatedCards.length < 2) {
         // Add new card if less than 2 cards
         updatedCards.push(newCard);
+        newIndex = updatedCards.length - 1;
       } else {
         // Replace oldest card (shift left)
         updatedCards[0] = updatedCards[1];
         updatedCards[1] = newCard;
+        newIndex = 1;
       }
+      
+      // Mark which card is new for animation
+      setNewCardIndex(newIndex);
+      
+      // Remove new card marker after animation
+      setTimeout(() => {
+        setNewCardIndex(-1);
+      }, 1500);
       
       console.log('Updated user cards:', updatedCards);
       return updatedCards;
