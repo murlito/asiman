@@ -33,7 +33,15 @@
 }
 
 .playing-card.face-down .card-front {
-  transform: rotateY(180deg);
+  transform: rotateY(-180deg);
+}
+
+.playing-card.face-down .card-back {
+  transform: rotateY(0deg);
+}
+
+.playing-card.face-up .card-front {
+  transform: rotateY(0deg);
 }
 
 .playing-card.face-up .card-back {
