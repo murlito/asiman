@@ -252,14 +252,16 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
 
   const findCardAreas = (data, width, height) => {
     const areas = [];
-    const blockSize = 20; // Analyze in 20x20 pixel blocks
+    const blockSize = 25; // Increased block size for more stable detection
     
     for (let y = 0; y < height - blockSize; y += blockSize) {
       for (let x = 0; x < width - blockSize; x += blockSize) {
         let whitePixels = 0;
         let totalPixels = 0;
+        let edgePixels = 0; // Count edge transitions
+        let previousBrightness = 0;
         
-        // Check block for white/light areas
+        // Check block for white/light areas and edge detection
         for (let dy = 0; dy < blockSize; dy++) {
           for (let dx = 0; dx < blockSize; dx++) {
             const i = ((y + dy) * width + (x + dx)) * 4;
@@ -269,27 +271,46 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
             
             // Check if pixel is light (potential card background)
             const brightness = (r + g + b) / 3;
-            if (brightness > 200) {
+            
+            // Count white pixels (card background)
+            if (brightness > 220) { // Stricter white threshold
               whitePixels++;
             }
+            
+            // Count edge transitions (indicates card borders)
+            if (totalPixels > 0) {
+              const brightnessDiff = Math.abs(brightness - previousBrightness);
+              if (brightnessDiff > 50) {
+                edgePixels++;
+              }
+            }
+            
+            previousBrightness = brightness;
             totalPixels++;
           }
         }
         
-        // If block is mostly white, it might be a card
-        if (whitePixels / totalPixels > 0.6) {
+        const whitenessRatio = whitePixels / totalPixels;
+        const edgeRatio = edgePixels / totalPixels;
+        
+        // Stricter criteria for card detection
+        if (whitenessRatio > 0.7 && // Must be mostly white
+            edgeRatio > 0.1 && edgeRatio < 0.4 && // Must have some edges but not too chaotic
+            whitePixels > 400) { // Minimum white pixel count
           areas.push({
             x: x,
             y: y,
             size: blockSize,
-            whiteness: whitePixels / totalPixels
+            whiteness: whitenessRatio,
+            edges: edgeRatio,
+            confidence: (whitenessRatio * 0.7) + (edgeRatio * 0.3)
           });
         }
       }
     }
     
-    // Sort by whiteness (most likely to be cards)
-    return areas.sort((a, b) => b.whiteness - a.whiteness);
+    // Sort by confidence score instead of just whiteness
+    return areas.sort((a, b) => b.confidence - a.confidence);
   };
 
   // Enhanced corner analysis with focus on low cards
