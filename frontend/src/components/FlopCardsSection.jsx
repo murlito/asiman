@@ -189,7 +189,7 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
 
 
   const recognizeCardFromImage = (imageData, ctx) => {
-    console.log('Auto-analyzing image for cards...');
+    console.log('=== CARD RECOGNITION ANALYSIS ===');
     const data = imageData.data;
     const width = imageData.width;
     const height = imageData.height;
@@ -200,8 +200,10 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
     const cardInfo = analyzeCardImage(data, width, height);
     
     if (cardInfo) {
-      console.log('Card recognized:', cardInfo);
-      console.log('Debug info:', cardInfo.debug);
+      console.log('✅ CARD RECOGNIZED:', cardInfo.name);
+      console.log('Debug details:', cardInfo.debug);
+      console.log('Final confidence:', Math.round(cardInfo.confidence * 100) + '%');
+      
       setRecognizedCard(cardInfo);
       
       // Call the parent callback to update user cards
@@ -213,7 +215,7 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
       const displayElement = document.getElementById('recognized-card');
       if (displayElement) {
         const debugInfo = cardInfo.debug ? 
-          ` (R:${cardInfo.debug.redPixels} B:${cardInfo.debug.blackPixels} S:${cardInfo.debug.symbolCount})` : '';
+          ` (BG:${cardInfo.debug.backgroundRatio}% CC:${cardInfo.debug.colorConfidence}%)` : '';
         
         displayElement.textContent = `${cardInfo.name} ${Math.round(cardInfo.confidence * 100)}%${debugInfo}`;
         displayElement.style.display = 'block';
@@ -224,8 +226,10 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
           displayElement.style.display = 'none';
         }, 4000);
       }
+    } else {
+      console.log('❌ NO VALID CARD DETECTED - Too many rejections or low confidence');
     }
-    // Don't show "no card detected" message for automatic scanning
+    console.log('=== END ANALYSIS ===');
   };
 
   const analyzeCardImage = (data, width, height) => {
