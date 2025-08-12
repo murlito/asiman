@@ -25,7 +25,7 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
       startCamera();
     }, 1000);
 
-    // Auto-scan every 2 seconds when camera is active (simpler algorithm allows faster scanning)
+    // Фото каждые 2 секунды когда камера активна
     const scanInterval = setInterval(() => {
       if (isCameraActive) {
         scanCard();
