@@ -37,7 +37,25 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
             <span className="pot-info">Pot: ${gameInfo.pot}</span>
           </div>
         </div>
-        <Button variant="destructive" size="sm" onClick={handleLeave}>Leave</Button>
+        <AlertDialog open={isLeaveDialogOpen} onOpenChange={setIsLeaveDialogOpen}>
+          <AlertDialogTrigger asChild>
+            <Button variant="destructive" size="sm">Leave</Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Leave Game?</AlertDialogTitle>
+              <AlertDialogDescription>
+                Are you sure you want to leave the game? You will lose your current progress.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={handleConfirmLeave} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                Leave Game
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
       
       <div className="flop-cards">
