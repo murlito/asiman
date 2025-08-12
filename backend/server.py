@@ -75,6 +75,20 @@ class CardScanResponse(BaseModel):
     processing_time_ms: float
     frame_processed: bool
 
+# Poker Game Models
+class CreateGameRequest(BaseModel):
+    small_blind: int = 10
+    big_blind: int = 20
+
+class JoinGameRequest(BaseModel):
+    game_id: str
+    player_name: str
+    chips: int = 1000
+
+class PlayerActionRequest(BaseModel):
+    action: str  # fold, check, call, raise, all_in
+    raise_amount: int = 0
+
 # Add your routes to the router instead of directly to app
 @api_router.get("/")
 async def root():
