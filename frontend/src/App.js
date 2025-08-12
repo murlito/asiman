@@ -36,7 +36,7 @@ function App() {
     if (playerSession?.playerId) {
       try {
         // Call leave game API
-        const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_URL || process.env.REACT_APP_BACKEND_URL}/api/poker/leave-game/${playerSession.playerId}`, {
+        const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_URL || process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001'}/api/poker/leave-game/${playerSession.playerId}`, {
           method: 'POST'
         });
 
