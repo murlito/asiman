@@ -101,10 +101,10 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
         video.addEventListener('loadedmetadata', resolve, { once: true });
       });
       
-      // Update button and status
+      // Update button and status - keep Start Camera button as is
       const startBtn = document.getElementById('start-camera');
       if (startBtn) {
-        startBtn.textContent = 'Camera On';
+        startBtn.textContent = 'Camera Active';
         startBtn.style.background = '#059669';
       }
       
@@ -122,6 +122,13 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
       if (statusElement) {
         statusElement.textContent = 'Camera: Error';
         statusElement.style.color = '#dc2626';
+      }
+      
+      // Keep the Start Camera button unchanged - don't switch to Demo Mode automatically
+      const startBtn = document.getElementById('start-camera');
+      if (startBtn) {
+        startBtn.textContent = 'Try Again';
+        startBtn.style.background = '#dc2626';
       }
       
       // Provide specific error messages and solutions
@@ -149,10 +156,7 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
       }
       
       // Show user-friendly error dialog
-      alert(`${errorMessage}\n\n${solution}`);
-      
-      // Also try to enable demo mode
-      enableDemoMode();
+      alert(`${errorMessage}\n\n${solution}\n\nTip: You can use "Demo Mode" to test the card scanner without a camera.`);
     }
   };
 
