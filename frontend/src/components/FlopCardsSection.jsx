@@ -45,7 +45,7 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
 
   const startCamera = async () => {
     try {
-      console.log('Starting camera...');
+      console.log('Auto-starting camera...');
       const statusElement = document.getElementById('camera-status');
       
       if (statusElement) {
@@ -53,104 +53,96 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
         statusElement.style.color = '#f59e0b';
       }
 
-      // Check if getUserMedia is supported
-      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        throw new Error('getUserMedia not supported in this browser');
+      const video = document.getElementById('camera-video');
+      if (!video) {
+        throw new Error('Video element not found');
       }
 
-      const video = document.getElementById('camera-video');
-      
-      // Try different camera configurations
-      const constraints = [
-        { video: { width: 640, height: 480, facingMode: 'environment' } },
-        { video: { width: 640, height: 480 } },
-        { video: { width: 320, height: 240 } },
-        { video: true }
-      ];
-      
-      let stream = null;
-      let lastError = null;
-      
-      for (const constraint of constraints) {
-        try {
-          console.log('Trying constraint:', constraint);
-          stream = await navigator.mediaDevices.getUserMedia(constraint);
-          console.log('Camera stream obtained with constraint:', constraint);
-          break;
-        } catch (err) {
-          console.warn('Constraint failed:', constraint, err.message);
-          lastError = err;
+      // Enhanced camera constraints for better compatibility
+      const constraints = {
+        video: {
+          width: { ideal: 640, min: 320 },
+          height: { ideal: 480, min: 240 },
+          frameRate: { ideal: 30, min: 15 },
+          facingMode: 'environment', // Prefer back camera
+          autoGainControl: true,
+          echoCancellation: false,
+          noiseSuppression: false
         }
-      }
+      };
+
+      console.log('Requesting camera access...');
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
       
-      if (!stream) {
-        throw lastError || new Error('All camera configurations failed');
-      }
-      
+      console.log('Camera stream obtained, setting up video...');
       video.srcObject = stream;
-      setIsCameraActive(true);
       
-      // Wait for video to be ready
-      await new Promise((resolve) => {
-        video.addEventListener('loadedmetadata', resolve, { once: true });
+      // Wait for video to load and show content
+      await new Promise((resolve, reject) => {
+        video.onloadedmetadata = () => {
+          console.log(`Video ready: ${video.videoWidth}x${video.videoHeight}`);
+          video.play().then(resolve).catch(reject);
+        };
+        
+        video.onerror = () => {
+          reject(new Error('Video playback failed'));
+        };
+        
+        // Timeout after 10 seconds
+        setTimeout(() => {
+          reject(new Error('Video loading timeout'));
+        }, 10000);
       });
       
-      // Update button and status - keep Start Camera button as is
-      const startBtn = document.getElementById('start-camera');
-      if (startBtn) {
-        startBtn.textContent = 'Camera Active';
-        startBtn.style.background = '#059669';
-      }
+      setIsCameraActive(true);
       
       if (statusElement) {
-        statusElement.textContent = 'Camera: Active';
+        statusElement.textContent = 'Camera: Active - Auto-scanning...';
         statusElement.style.color = '#059669';
       }
 
       console.log('Camera activated successfully');
       
     } catch (err) {
-      console.error('Error accessing camera:', err);
+      console.error('Camera error:', err);
       
       const statusElement = document.getElementById('camera-status');
+      
+      // Try fallback constraints
+      if (err.name === 'OverconstrainedError' || err.name === 'NotSupportedError') {
+        console.log('Trying fallback camera settings...');
+        try {
+          const video = document.getElementById('camera-video');
+          const fallbackStream = await navigator.mediaDevices.getUserMedia({ video: true });
+          
+          video.srcObject = fallbackStream;
+          await video.play();
+          
+          setIsCameraActive(true);
+          
+          if (statusElement) {
+            statusElement.textContent = 'Camera: Active - Auto-scanning...';
+            statusElement.style.color = '#059669';
+          }
+          
+          console.log('Fallback camera activated');
+          return;
+          
+        } catch (fallbackErr) {
+          console.error('Fallback camera also failed:', fallbackErr);
+        }
+      }
+      
       if (statusElement) {
-        statusElement.textContent = 'Camera: Error';
+        statusElement.textContent = 'Camera: Error - Check permissions';
         statusElement.style.color = '#dc2626';
       }
       
-      // Keep the Start Camera button unchanged - don't switch to Demo Mode automatically
-      const startBtn = document.getElementById('start-camera');
-      if (startBtn) {
-        startBtn.textContent = 'Try Again';
-        startBtn.style.background = '#dc2626';
-      }
-      
-      // Provide specific error messages and solutions
-      let errorMessage = 'Camera error: ';
-      let solution = '';
-      
-      if (err.name === 'NotAllowedError') {
-        errorMessage = 'Camera access denied.';
-        solution = 'Please click "Allow" when prompted for camera permission, or check your browser settings to enable camera access for this site.';
-      } else if (err.name === 'NotFoundError') {
-        errorMessage = 'No camera found.';
-        solution = 'Please connect a camera to your device and refresh the page.';
-      } else if (err.name === 'NotSupportedError') {
-        errorMessage = 'Camera not supported.';
-        solution = 'Try using Chrome, Firefox, or Safari browser. Some browsers require HTTPS for camera access.';
-      } else if (err.message.includes('getUserMedia not supported')) {
-        errorMessage = 'Browser not supported.';
-        solution = 'Please use a modern browser like Chrome, Firefox, or Safari.';
-      } else if (err.name === 'NotReadableError') {
-        errorMessage = 'Camera is in use.';
-        solution = 'Close other applications that might be using the camera and try again.';
-      } else {
-        errorMessage = `Camera error: ${err.message}`;
-        solution = 'Try refreshing the page or using a different browser.';
-      }
-      
-      // Show user-friendly error dialog
-      alert(`${errorMessage}\n\n${solution}\n\nTip: You can use "Demo Mode" to test the card scanner without a camera.`);
+      // Retry camera after 5 seconds
+      setTimeout(() => {
+        console.log('Retrying camera...');
+        startCamera();
+      }, 5000);
     }
   };
 
