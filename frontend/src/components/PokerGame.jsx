@@ -13,6 +13,7 @@ export default function PokerGame({ playerName, onLeaveGame }) {
   const [communityCards, setCommunityCards] = useState([]);
   const [gameInfo, setGameInfo] = useState(mockData.gameInfo);
   const [currentPlayerChips, setCurrentPlayerChips] = useState(1000);
+  const [newCardIndex, setNewCardIndex] = useState(-1); // Track which card is new
   const { toast } = useToast();
 
   useEffect(() => {
