@@ -23,6 +23,25 @@ db = client[os.environ['DB_NAME']]
 # Create the main app without a prefix
 app = FastAPI()
 
+# Load OpenCV training images on startup
+train_ranks = None
+train_suits = None
+
+@app.on_event("startup")
+async def load_training_images():
+    """Load OpenCV card training images on startup"""
+    global train_ranks, train_suits
+    try:
+        cards_path = "/app/backend/Card_Imgs/"
+        if os.path.exists(cards_path):
+            train_ranks = opencv_cards.load_ranks(cards_path)
+            train_suits = opencv_cards.load_suits(cards_path)
+            logger.info("✅ OpenCV training images loaded successfully")
+        else:
+            logger.error("❌ Card_Imgs directory not found")
+    except Exception as e:
+        logger.error(f"❌ Failed to load training images: {e}")
+
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
 
