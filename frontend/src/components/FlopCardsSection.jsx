@@ -90,8 +90,11 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
     // Convert to base64 for processing
     const imageData = canvas.toDataURL('image/jpeg', 0.8);
     
-    // Simulate card recognition (in real app, this would call an AI service)
-    simulateCardRecognition(imageData);
+    // Get image data for analysis
+    const pixelData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    
+    // Analyze the image for card recognition
+    recognizeCardFromImage(pixelData, ctx);
   };
 
   const scanCard = () => {
