@@ -231,7 +231,7 @@
 }
 
 .user-card-hover-container:active .playing-card.face-down .card-back {
-  transform: rotateY(-180deg);
+  transform: rotateY(180deg);
 }
 
 .hand-cards-container .playing-card-container {
