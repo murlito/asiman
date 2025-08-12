@@ -74,8 +74,9 @@ export default function PokerGame({ playerName, onLeaveGame }) {
     // 1. Send leave request to backend
     // 2. Clean up game state
     // 3. Redirect to lobby or home page
-    alert('You have left the game. Redirecting to lobby...');
-    // In real app: navigate('/lobby') or similar
+    if (onLeaveGame) {
+      onLeaveGame();
+    }
   };
 
   return (
