@@ -154,6 +154,9 @@ export default function PokerGame({ playerName, onLeaveGame }) {
           />
         </div>
       </div>
+      
+      {/* Toast notifications */}
+      <Toaster />
     </div>
   );
 }
