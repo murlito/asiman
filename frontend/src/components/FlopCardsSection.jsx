@@ -46,7 +46,17 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
 
   const startCamera = async () => {
     try {
+      console.log('Starting camera...');
+      const statusElement = document.getElementById('camera-status');
+      
+      if (statusElement) {
+        statusElement.textContent = 'Camera: Starting...';
+        statusElement.style.color = '#f59e0b';
+      }
+
       const video = document.getElementById('camera-video');
+      
+      // Try to get camera access
       const stream = await navigator.mediaDevices.getUserMedia({ 
         video: { 
           width: { ideal: 640 },
@@ -55,18 +65,43 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
         } 
       });
       
+      console.log('Camera stream obtained');
       video.srcObject = stream;
       setIsCameraActive(true);
       
-      // Update button text
+      // Update button and status
       const startBtn = document.getElementById('start-camera');
       if (startBtn) {
         startBtn.textContent = 'Camera On';
         startBtn.style.background = '#059669';
       }
+      
+      if (statusElement) {
+        statusElement.textContent = 'Camera: Active';
+        statusElement.style.color = '#059669';
+      }
+
+      console.log('Camera activated successfully');
+      
     } catch (err) {
       console.error('Error accessing camera:', err);
-      alert('Could not access camera. Please check permissions.');
+      
+      const statusElement = document.getElementById('camera-status');
+      if (statusElement) {
+        statusElement.textContent = 'Camera: Error';
+        statusElement.style.color = '#dc2626';
+      }
+      
+      // More detailed error message
+      if (err.name === 'NotAllowedError') {
+        alert('Camera access denied. Please allow camera permissions and refresh the page.');
+      } else if (err.name === 'NotFoundError') {
+        alert('No camera found. Please connect a camera and try again.');
+      } else if (err.name === 'NotSupportedError') {
+        alert('Camera not supported in this browser. Try Chrome or Firefox.');
+      } else {
+        alert(`Camera error: ${err.message}. Please check camera permissions.`);
+      }
     }
   };
 
