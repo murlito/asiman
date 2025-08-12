@@ -188,19 +188,22 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
 
 
 
-  const recognizeCardFromImage = (imageData, ctx) => {
-    console.log('=== CARD PHOTO CAPTURE ===');
-    const data = imageData.data;
-    const width = imageData.width;
-    const height = imageData.height;
+  const recognizeCardFromImage = async (imageData, ctx) => {
+    console.log('=== OPENCV CARD RECOGNITION ===');
+    const canvas = document.createElement('canvas');
+    canvas.width = imageData.width;
+    canvas.height = imageData.height;
     
-    console.log(`Обрабатываю кадр: ${width}x${height}`);
+    const context = canvas.getContext('2d');
+    context.putImageData(imageData, 0, 0);
     
-    // Анализ изображения
-    const capturedCards = analyzeCardImage(data, width, height);
+    console.log(`Обрабатываю кадр: ${canvas.width}x${canvas.height}`);
+    
+    // Анализ изображения через OpenCV
+    const capturedCards = await analyzeCardImage(canvas);
     
     if (capturedCards && capturedCards.length > 0) {
-      console.log('📸 КАРТЫ СФОТОГРАФИРОВАНЫ:', capturedCards.length, 'карт(ы)');
+      console.log('📸 OPENCV КАРТЫ ОБНАРУЖЕНЫ:', capturedCards.length, 'карт(ы)');
       
       setRecognizedCard(capturedCards);
       
@@ -214,24 +217,24 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
       // Показываем результат
       const displayElement = document.getElementById('recognized-card');
       if (displayElement) {
-        const cardNames = capturedCards.map(card => card.name).join(' + ');
-        displayElement.textContent = `📸 Сфотографировано: ${cardNames}`;
+        const cardNames = capturedCards.map(card => `${card.name} (${Math.round(card.confidence * 100)}%)`).join(' + ');
+        displayElement.textContent = `🔍 OpenCV: ${cardNames}`;
         displayElement.style.display = 'block';
         displayElement.style.background = 'rgba(34, 197, 94, 0.9)';
         displayElement.style.color = 'white';
-        displayElement.style.fontSize = '14px';
-        displayElement.style.padding = '8px 12px';
-        displayElement.style.borderRadius = '6px';
+        displayElement.style.fontSize = '12px';
+        displayElement.style.padding = '6px 10px';
+        displayElement.style.borderRadius = '4px';
         
-        // Скрываем через 3 секунды
+        // Скрываем через 4 секунды
         setTimeout(() => {
           displayElement.style.display = 'none';
-        }, 3000);
+        }, 4000);
       }
     } else {
-      console.log('❌ Нет карт для фото');
+      console.log('❌ OpenCV: Карты не найдены');
     }
-    console.log('=== КОНЕЦ ФОТО ===');
+    console.log('=== КОНЕЦ OPENCV ===');
   };
 
   const analyzeCardImage = async (canvas) => {
