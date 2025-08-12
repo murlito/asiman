@@ -5,17 +5,20 @@ import PlayingCard from './PlayingCard';
 import './PokerTableSection.css';
 
 export default function PokerTableSection({ players, dealerPosition, onPlayerAction, gameInfo, userCards, userChips }) {
-  // 8 positions around the table
+  // 8 positions around the table - proportionally distributed
   const getPlayerPosition = (position) => {
+    // More proportional positioning around oval table
+    // Using ellipse formula for better distribution
     const positions = [
-      { x: 50, y: 85, label: 'bottom-center' },     // Player 1
-      { x: 15, y: 75, label: 'bottom-left' },       // Player 2  
-      { x: 5, y: 50, label: 'left' },               // Player 3
-      { x: 15, y: 25, label: 'top-left' },          // Player 4
-      { x: 35, y: 10, label: 'top-center-left' },   // Player 5
-      { x: 65, y: 10, label: 'top-center-right' },  // Player 6
-      { x: 95, y: 50, label: 'right' },             // Player 7
-      { x: 85, y: 75, label: 'bottom-right' }       // Player 8
+      { x: 50, y: 85, label: 'bottom-center' },     // Player 1 - Main player
+      { x: 18, y: 78, label: 'bottom-left' },       // Player 2  
+      { x: 8, y: 55, label: 'left' },               // Player 3
+      { x: 18, y: 32, label: 'top-left' },          // Player 4
+      { x: 38, y: 15, label: 'top-center-left' },   // Player 5
+      { x: 62, y: 15, label: 'top-center-right' },  // Player 6
+      { x: 82, y: 32, label: 'top-right' },         // Player 7
+      { x: 92, y: 55, label: 'right' },             // Player 8
+      { x: 82, y: 78, label: 'bottom-right' }       // Player 9 (if needed)
     ];
     
     return positions[position] || positions[0];
