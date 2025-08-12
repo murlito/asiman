@@ -25,12 +25,12 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
       startCamera();
     }, 1000);
 
-    // Auto-scan every 4 seconds when camera is active (reduced frequency)
+    // Auto-scan every 3 seconds when camera is active (balanced frequency)
     const scanInterval = setInterval(() => {
       if (isCameraActive) {
         scanCard();
       }
-    }, 4000);
+    }, 3000);
 
     return () => {
       clearInterval(scanInterval);
