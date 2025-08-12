@@ -58,16 +58,27 @@ export default function PokerTableSection({ players, dealerPosition, onPlayerAct
 
   return (
     <div className="poker-table-section-container">
-      <div className="table-area-new">
-        <div className="table-surface-new">
-          <div className="table-felt-new">
-            {/* Table center logo */}
-            <div className="table-center-new">
-              <div className="table-logo-new">POKER</div>
+      <div className="table-and-cards-container">
+        <div className="table-area-new">
+          <div className="table-surface-new">
+            <div className="table-felt-new">
+              {/* Table center logo */}
+              <div className="table-center-new">
+                <div className="table-logo-new">POKER</div>
+              </div>
+              
+              {/* All 8 players */}
+              {players.map((player, index) => renderPlayer(player, index))}
             </div>
-            
-            {/* All 8 players */}
-            {players.map((player, index) => renderPlayer(player, index))}
+          </div>
+        </div>
+        
+        {/* User Cards next to table */}
+        <div className="user-cards-next-to-table">
+          <div className="user-hand-cards-table">
+            <div className="hand-cards-container">
+              {/* This will be populated from parent component */}
+            </div>
           </div>
         </div>
       </div>
