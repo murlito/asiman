@@ -11,7 +11,8 @@ export default function UserCardsSection({ cards, chips }) {
             key={index}
             card={card}
             faceDown={false}
-            delay={index * 0.1}
+            delay={index * 0.2}
+            animationType="slide-up"
           />
         ))}
       </div>
