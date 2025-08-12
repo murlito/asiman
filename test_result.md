@@ -101,3 +101,35 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+user_problem_statement: Camera cannot scan and detect cards at all. Need to radically simplify the card recognition algorithm to make it work consistently.
+
+frontend:
+  - task: "Simplify card scanner recognition algorithm"
+    implemented: false
+    working: false
+    file: "/app/frontend/src/components/FlopCardsSection.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: false
+          agent: "main"
+          comment: "Current complex algorithm with multiple rejection criteria is not detecting cards at all. User specifically requested radical simplification."
+
+metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 0
+  run_ui: false
+
+test_plan:
+  current_focus:
+    - "Simplify card scanner recognition algorithm"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+    - agent: "main"
+      message: "Starting to radically simplify the card recognition algorithm. Current implementation has too many rejection criteria causing complete detection failure."
