@@ -61,13 +61,6 @@
   gap: 10px;
 }
 
-.camera-title {
-  font-size: 14px;
-  font-weight: bold;
-  color: #1a1a1a;
-  margin-bottom: 8px;
-}
-
 .camera-screen {
   position: relative;
   width: 200px;
