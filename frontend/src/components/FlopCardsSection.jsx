@@ -164,20 +164,24 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
   };
 
   const recognizeCardFromImage = (imageData, ctx) => {
+    console.log('Starting card recognition...');
     const data = imageData.data;
     const width = imageData.width;
     const height = imageData.height;
+    
+    console.log(`Analyzing image: ${width}x${height}, ${data.length} bytes`);
     
     // Card recognition algorithm
     const cardInfo = analyzeCardImage(data, width, height);
     
     if (cardInfo) {
+      console.log('Card recognized:', cardInfo);
       setRecognizedCard(cardInfo);
       
       // Display recognition result
       const displayElement = document.getElementById('recognized-card');
       if (displayElement) {
-        displayElement.textContent = `Detected: ${cardInfo.name}`;
+        displayElement.textContent = `Detected: ${cardInfo.name} (${Math.round(cardInfo.confidence * 100)}%)`;
         displayElement.style.display = 'block';
         displayElement.style.background = cardInfo.confidence > 0.7 ? 'rgba(0, 150, 0, 0.8)' : 'rgba(150, 150, 0, 0.8)';
         
@@ -187,6 +191,7 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
         }, 4000);
       }
     } else {
+      console.log('No card detected');
       // No card detected
       const displayElement = document.getElementById('recognized-card');
       if (displayElement) {
