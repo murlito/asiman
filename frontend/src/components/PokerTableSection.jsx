@@ -5,23 +5,39 @@ import PlayingCard from './PlayingCard';
 import './PokerTableSection.css';
 
 export default function PokerTableSection({ players, dealerPosition, onPlayerAction, gameInfo, userCards, userChips }) {
-  // 8 positions around the table - proportionally distributed
+  // 8 positions around the table - mathematically proportional
   const getPlayerPosition = (position) => {
-    // More proportional positioning around oval table
-    // Using ellipse formula for better distribution
-    const positions = [
-      { x: 50, y: 85, label: 'bottom-center' },     // Player 1 - Main player
-      { x: 18, y: 78, label: 'bottom-left' },       // Player 2  
-      { x: 8, y: 55, label: 'left' },               // Player 3
-      { x: 18, y: 32, label: 'top-left' },          // Player 4
-      { x: 38, y: 15, label: 'top-center-left' },   // Player 5
-      { x: 62, y: 15, label: 'top-center-right' },  // Player 6
-      { x: 82, y: 32, label: 'top-right' },         // Player 7
-      { x: 92, y: 55, label: 'right' },             // Player 8
-      { x: 82, y: 78, label: 'bottom-right' }       // Player 9 (if needed)
+    // Perfect elliptical distribution around the table
+    // Center of table at (50, 50), ellipse radii: horizontal=42, vertical=35
+    const centerX = 50;
+    const centerY = 50; 
+    const radiusX = 42; // Horizontal radius
+    const radiusY = 35; // Vertical radius
+    
+    // Calculate angle for each position (8 positions = 45° apart)
+    // Start from bottom (270°) and go clockwise
+    const angles = [
+      270, // Player 1 - Bottom center (main player)
+      225, // Player 2 - Bottom left  
+      180, // Player 3 - Left
+      135, // Player 4 - Top left
+      90,  // Player 5 - Top center left
+      45,  // Player 6 - Top center right  
+      0,   // Player 7 - Top right
+      315  // Player 8 - Right
     ];
     
-    return positions[position] || positions[0];
+    const angle = angles[position] || angles[0];
+    const radians = (angle * Math.PI) / 180;
+    
+    const x = centerX + radiusX * Math.cos(radians);
+    const y = centerY + radiusY * Math.sin(radians);
+    
+    return { 
+      x: Math.round(x), 
+      y: Math.round(y), 
+      label: `position-${position}` 
+    };
   };
 
   const renderPlayer = (player, index) => {
