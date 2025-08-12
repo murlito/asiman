@@ -78,10 +78,10 @@ export default function PokerGame() {
         />
       </div>
 
-      {/* Bottom Section - Table and User Cards */}
+      {/* Bottom Section - Only Table */}
       <div className="bottom-sections">
-        {/* Left - Poker Table with User Cards */}
-        <div className="table-section">
+        {/* Table with User Cards */}
+        <div className="table-section-full">
           <PokerTableSection 
             players={players}
             dealerPosition={0}
@@ -89,14 +89,6 @@ export default function PokerGame() {
             gameInfo={gameInfo}
             userCards={currentPlayerHand}
             userChips={currentPlayerChips}
-          />
-        </div>
-
-        {/* Right - Additional Info */}
-        <div className="user-cards-section">
-          <UserCardsSection 
-            cards={currentPlayerHand}
-            chips={currentPlayerChips}
           />
         </div>
       </div>
