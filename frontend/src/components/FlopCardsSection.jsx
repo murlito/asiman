@@ -234,101 +234,51 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
     console.log('=== КОНЕЦ ФОТО ===');
   };
 
-  const analyzeCardImage = (data, width, height) => {
-    console.log('=== SIMPLE CARD CAPTURE ===');
+  const analyzeCardImage = async (canvas) => {
+    console.log('=== OPENCV CARD DETECTION ===');
     
-    // Очень простой анализ - ищем любые изменения в изображении
-    let darkPixels = 0;
-    let lightPixels = 0;
-    let totalSamples = 0;
-    
-    // Сэмплируем каждый 100-й пиксель для скорости
-    for (let i = 0; i < data.length; i += 400) {
-      const r = data[i];
-      const g = data[i + 1];
-      const b = data[i + 2];
+    try {
+      // Convert canvas to base64
+      const frameData = canvas.toDataURL('image/jpeg', 0.8);
       
-      const brightness = (r + g + b) / 3;
+      console.log('Отправляю кадр на OpenCV сервер...');
       
-      if (brightness < 120) {
-        darkPixels++;
-      } else if (brightness > 180) {
-        lightPixels++;
+      // Send frame to backend for OpenCV processing  
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_URL || process.env.REACT_APP_BACKEND_URL}/api/scan-cards`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          frame_data: frameData
+        })
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-      totalSamples++;
-    }
-    
-    const darkRatio = darkPixels / totalSamples;
-    const lightRatio = lightPixels / totalSamples;
-    
-    console.log('Фото анализ:', {
-      darkPixels,
-      lightPixels,
-      darkRatio: Math.round(darkRatio * 100) + '%',
-      lightRatio: Math.round(lightRatio * 100) + '%'
-    });
-    
-    // Если есть контраст (темные и светлые области) - "фотографируем" карты
-    if (darkRatio > 0.1 && lightRatio > 0.2 && darkPixels > 10) {
-      console.log('📸 КАРТЫ ОБНАРУЖЕНЫ - Фотографирую...');
       
-      // Генерируем 2 случайные карты
-      const cards = generateTwoRandomCards();
+      const result = await response.json();
       
-      console.log('✅ СФОТОГРАФИРОВАНЫ КАРТЫ:', cards);
-      return cards;
+      console.log('📸 OpenCV ответ:', result);
+      console.log(`⏱️ Время обработки: ${result.processing_time_ms}ms`);
       
-    } else {
-      console.log('❌ Поместите карты в рамки для фото');
+      if (result.cards && result.cards.length > 0) {
+        console.log(`✅ ОБНАРУЖЕНО ${result.cards.length} КАРТ(Ы):`);
+        result.cards.forEach((card, idx) => {
+          console.log(`   ${idx + 1}. ${card.name} (${Math.round(card.confidence * 100)}%)`);
+        });
+        
+        return result.cards;
+      } else {
+        console.log('❌ Карты не обнаружены');
+        return null;
+      }
+      
+    } catch (error) {
+      console.error('❌ Ошибка OpenCV сканирования:', error);
       return null;
     }
-  };
-
-  // Функция для генерации 2х случайных карт
-  const generateTwoRandomCards = () => {
-    const suits = ['spades', 'hearts', 'diamonds', 'clubs'];
-    const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
-    const suitNames = {
-      'spades': 'Spades',
-      'hearts': 'Hearts', 
-      'diamonds': 'Diamonds',
-      'clubs': 'Clubs'
-    };
-    
-    const card1Suit = suits[Math.floor(Math.random() * suits.length)];
-    const card1Rank = ranks[Math.floor(Math.random() * ranks.length)];
-    
-    let card2Suit, card2Rank;
-    // Убеждаемся что вторая карта отличается от первой
-    do {
-      card2Suit = suits[Math.floor(Math.random() * suits.length)];
-      card2Rank = ranks[Math.floor(Math.random() * ranks.length)];
-    } while (card1Suit === card2Suit && card1Rank === card2Rank);
-    
-    return [
-      {
-        rank: card1Rank,
-        suit: card1Suit,
-        name: `${card1Rank} of ${suitNames[card1Suit]}`,
-        color: (card1Suit === 'hearts' || card1Suit === 'diamonds') ? 'red' : 'black',
-        confidence: 0.95,
-        debug: {
-          method: 'photo_capture',
-          slot: 1
-        }
-      },
-      {
-        rank: card2Rank,
-        suit: card2Suit,
-        name: `${card2Rank} of ${suitNames[card2Suit]}`,
-        color: (card2Suit === 'hearts' || card2Suit === 'diamonds') ? 'red' : 'black',
-        confidence: 0.95,
-        debug: {
-          method: 'photo_capture',
-          slot: 2
-        }
-      }
-    ];
   };
 
   const handleConfirmLeave = () => {
