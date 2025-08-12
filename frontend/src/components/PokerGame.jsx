@@ -122,6 +122,7 @@ export default function PokerGame({ playerName, onLeaveGame }) {
           cards={communityCards}
           gameInfo={gameInfo}
           onLeave={handleLeaveGame}
+          onCardScanned={handleScannedCard}
         />
       </div>
 
