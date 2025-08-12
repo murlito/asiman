@@ -159,7 +159,9 @@
   }
 }
 
-@keyframes cardSlideUp {
+.playing-card-container.animation-slide-up {
+  animation: cardSlideUp 1.0s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
   0% {
     transform: translateY(150px) rotateX(45deg) scale(0.8);
     opacity: 0;
