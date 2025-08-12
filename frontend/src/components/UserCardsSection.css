@@ -6,15 +6,7 @@
   gap: 20px;
 }
 
-.user-cards-title {
-  font-size: 32px;
-  font-weight: bold;
-  text-align: center;
-  color: #1a1a1a;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  letter-spacing: 3px;
-  margin-bottom: 10px;
-}
+
 
 .user-hand-cards {
   display: flex;
