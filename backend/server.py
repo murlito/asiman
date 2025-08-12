@@ -9,6 +9,7 @@ from pydantic import BaseModel, Field
 from typing import List
 import uuid
 from datetime import datetime
+import opencv_cards
 
 
 ROOT_DIR = Path(__file__).parent
