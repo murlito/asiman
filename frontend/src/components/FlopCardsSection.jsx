@@ -279,14 +279,14 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
   };
 
   const recognizeCardFromImage = (imageData, ctx) => {
-    console.log('Starting card recognition...');
+    console.log('Auto-analyzing image for cards...');
     const data = imageData.data;
     const width = imageData.width;
     const height = imageData.height;
     
-    console.log(`Analyzing image: ${width}x${height}, ${data.length} bytes`);
+    console.log(`Processing image: ${width}x${height}, ${data.length} bytes`);
     
-    // Card recognition algorithm
+    // Enhanced card recognition algorithm
     const cardInfo = analyzeCardImage(data, width, height);
     
     if (cardInfo) {
@@ -296,29 +296,17 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave }) {
       // Display recognition result
       const displayElement = document.getElementById('recognized-card');
       if (displayElement) {
-        displayElement.textContent = `Detected: ${cardInfo.name} (${Math.round(cardInfo.confidence * 100)}%)`;
+        displayElement.textContent = `${cardInfo.name} (${Math.round(cardInfo.confidence * 100)}%)`;
         displayElement.style.display = 'block';
         displayElement.style.background = cardInfo.confidence > 0.7 ? 'rgba(0, 150, 0, 0.8)' : 'rgba(150, 150, 0, 0.8)';
         
-        // Hide after 4 seconds
+        // Keep result visible longer
         setTimeout(() => {
           displayElement.style.display = 'none';
-        }, 4000);
-      }
-    } else {
-      console.log('No card detected');
-      // No card detected
-      const displayElement = document.getElementById('recognized-card');
-      if (displayElement) {
-        displayElement.textContent = 'No card detected';
-        displayElement.style.display = 'block';
-        displayElement.style.background = 'rgba(150, 0, 0, 0.8)';
-        
-        setTimeout(() => {
-          displayElement.style.display = 'none';
-        }, 2000);
+        }, 5000);
       }
     }
+    // Don't show "no card detected" message for automatic scanning
   };
 
   const analyzeCardImage = (data, width, height) => {
