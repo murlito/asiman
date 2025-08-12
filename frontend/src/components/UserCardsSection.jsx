@@ -5,8 +5,6 @@ import './UserCardsSection.css';
 export default function UserCardsSection({ cards, chips }) {
   return (
     <div className="user-cards-container">
-      <div className="user-cards-title">USER'S CARDS</div>
-      
       <div className="user-hand-cards">
         {cards.map((card, index) => (
           <PlayingCard 
