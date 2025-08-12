@@ -292,9 +292,10 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
     return areas.sort((a, b) => b.whiteness - a.whiteness);
   };
 
+  // Enhanced corner analysis with focus on low cards
   const extractCorners = (data, width, height, cardArea) => {
     // Extract top-left corner for rank/suit analysis
-    const cornerSize = 40;
+    const cornerSize = 60; // Increased size for better analysis
     const corner = [];
     
     for (let y = cardArea.y; y < cardArea.y + cornerSize && y < height; y++) {
@@ -303,7 +304,9 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
         corner.push({
           r: data[i],
           g: data[i + 1],
-          b: data[i + 2]
+          b: data[i + 2],
+          x: x - cardArea.x,
+          y: y - cardArea.y
         });
       }
     }
