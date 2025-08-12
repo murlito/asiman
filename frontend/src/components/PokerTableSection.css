@@ -223,7 +223,7 @@
 }
 
 .user-card-hover-container .playing-card {
-  transition: transform 0.3s ease;
+  transition: none;
 }
 
 .user-card-hover-container:hover .playing-card {
