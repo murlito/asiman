@@ -174,7 +174,7 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
     
-    console.log(`Auto-scanning frame: ${canvas.width}x${canvas.height}`);
+    console.log(`Фотографирую кадр: ${canvas.width}x${canvas.height}`);
     
     // Draw current video frame to canvas
     ctx.drawImage(video, 0, 0);
