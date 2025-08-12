@@ -55,6 +55,24 @@ class StatusCheck(BaseModel):
 class StatusCheckCreate(BaseModel):
     client_name: str
 
+# OpenCV Card Detection Models
+class CardScanRequest(BaseModel):
+    frame_data: str
+
+class DetectedCard(BaseModel):
+    rank: str
+    suit: str
+    name: str
+    color: str
+    confidence: float
+    center: List[int]
+    debug: dict
+
+class CardScanResponse(BaseModel):
+    cards: List[DetectedCard]
+    processing_time_ms: float
+    frame_processed: bool
+
 # Add your routes to the router instead of directly to app
 @api_router.get("/")
 async def root():
