@@ -174,6 +174,9 @@ frontend:
         - working: false
           agent: "main"
           comment: "Implemented card photo capture system with 2 vertical scanning slots. Scanner now 'photographs' cards and generates 2 random cards when objects are detected. Changed from continuous scanning to photo capture every 2 seconds."
+        - working: false
+          agent: "main"
+          comment: "Implemented REAL OpenCV card detector based on EdjeElectronics implementation. Added backend API endpoint /api/scan-cards with contour detection, perspective correction, and template matching. Frontend now sends frames to OpenCV server for accurate card recognition."
 
 metadata:
   created_by: "main_agent"
