@@ -121,7 +121,7 @@ export default function FlopCardsSection({ cards, gameInfo, onLeave, onCardScann
           setIsCameraActive(true);
           
           if (statusElement) {
-            statusElement.textContent = 'Camera: Active - Фотографирование...';
+            statusElement.textContent = 'Camera: Active - OpenCV сканирует...';
             statusElement.style.color = '#059669';
           }
           
