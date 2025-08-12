@@ -239,11 +239,25 @@
 }
 
 .user-card-hover-container:active .playing-card.face-down .card-front {
-  transform: rotateY(0deg);
+  transform: rotateY(0deg);  
 }
 
 .user-card-hover-container:active .playing-card.face-down .card-back {
   transform: rotateY(-180deg);
+}
+
+/* Remove animations for user cards */
+.hand-cards-container .playing-card-container {
+  animation: none;
+}
+
+.hand-cards-container .playing-card {
+  transition: none;
+}
+
+.hand-cards-container .card-front,
+.hand-cards-container .card-back {
+  transition: none;
 }
 
 .hand-cards-container .playing-card-container {
